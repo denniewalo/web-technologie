@@ -1,0 +1,91 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Products API",
+    "description": "Documentation for Products API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Products",
+      "description": "API for products in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/products": {
+      "post": {
+        "summary": "Create new product",
+        "tags": [
+          "Products"
+        ],
+        "description": "Saves a new product into the MongoDB",
+        "parameters": [
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created Successfully!",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "401":{
+            "description": "Not authorized!"
+          },
+          "404":{
+            "description": "No token provided!"
+          },
+          "500":{
+            "description": "Creation of a new product failed!"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "Product": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6472131821"
+        },
+        "name": {
+          "type": "string",
+          "example": "Audi"
+        },
+        "price": {
+          "type": "string",
+          "example": "11,99"
+        },
+        "imageURL": {
+          "type": "string",
+          "example": "audi.jpeg"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "imageURL",
+        "price"
+      ]
+    }
+  }
+}

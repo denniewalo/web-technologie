@@ -1,11 +1,17 @@
 require('dotenv').config()
 
-const express    = require('express')
-const app        = express();
-const port       = 4000;
-const bodyParser = require('body-parser');
-const mongoose   = require('mongoose');
+const express      = require('express')
+const port         = 4000;
+const bodyParser   = require('body-parser');
+const mongoose     = require('mongoose');
+const swaggerUI    = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
+const specs = require('./swagger/swagger.json');
+
+const app          = express();
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
   extended: true
