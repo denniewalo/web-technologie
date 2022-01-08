@@ -2,6 +2,8 @@ Product = require('./../model/productModel');
 
 // Handle index actions
 exports.index = function (req, res) {
+  console.log(process.env.LAST_UPDATED)
+  process.env.LAST_UPDATED = "1";
   Product.get(function (err, products) {
     if (err) {
       res.json({
@@ -23,7 +25,7 @@ exports.new = function (req, res) {
   product.name = req.body.name;
   product.price = req.body.price;
   product.imageURL = req.body.imageURL;
-// save the contact and check for errors
+// save the product and check for errors
   product.save(function (err) {
     res.json({
       message: 'New product created!',
@@ -31,7 +33,7 @@ exports.new = function (req, res) {
     });
   });
 };
-// Handle view contact info
+// Handle view product info
 exports.view = function (req, res) {
   Product.findById(req.params.product_id, function (err, product) {
     if (err)
@@ -64,11 +66,13 @@ exports.update = function (req, res) {
 };
 // Handle delete product
 exports.delete = function (req, res) {
-  Product.remove({
+  Product.deleteOne({
     _id: req.params.product_id
   }, function (err, contact) {
-    if (err)
+    if (err) {
       res.send(err);
+      return;
+    }
     res.json({
       status: "success",
       message: 'Product deleted'
