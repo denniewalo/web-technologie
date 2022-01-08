@@ -16,6 +16,7 @@ exports.index = function (req, res) {
     });
   });
 };
+
 // Handle create product actions
 exports.new = function (req, res) {
   const product = new Product();
@@ -62,6 +63,7 @@ exports.update = function (req, res) {
     });
   });
 };
+
 // Handle delete product
 exports.delete = function (req, res) {
   Product.remove({
