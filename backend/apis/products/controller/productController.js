@@ -2,8 +2,6 @@ Product = require('./../model/productModel');
 
 // Handle index actions
 exports.index = function (req, res) {
-  console.log(process.env.LAST_UPDATED)
-  process.env.LAST_UPDATED = "1";
   Product.get(function (err, products) {
     if (err) {
       res.json({
