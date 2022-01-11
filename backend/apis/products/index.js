@@ -8,7 +8,7 @@ const swaggerUI    = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const specs = require('./swagger/swagger.json');
 const app          = express();
-let LAST_UPDATED   = Date.now(); // get current UNIX timestamp
+const cors         = require('cors');
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 // Configure bodyparser to handle post requests
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-
+app.use(cors());
 
 //Connect to mongoose
 mongoose.connect(process.env.DB_PRODUCTS,{ useNewUrlParser: true});
