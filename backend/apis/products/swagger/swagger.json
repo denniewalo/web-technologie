@@ -181,7 +181,7 @@
         },
         "price": {
           "type": "string",
-          "example": "11,99"
+          "example": "11"
         },
         "imageURL": {
           "type": "string",
