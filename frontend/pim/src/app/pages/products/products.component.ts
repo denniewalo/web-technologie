@@ -3,6 +3,7 @@ import {ProductService} from "../../services/product.service";
 
 import { Product } from "../../interfaces/Product";
 import {Observable} from "rxjs";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -11,7 +12,7 @@ import {Observable} from "rxjs";
 export class ProductsComponent implements OnInit {
   public products: Product[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(private router: Router, private productService: ProductService) { }
 
   ngOnInit(): void {
     this.productService.getProduct().subscribe((res) => {
@@ -21,10 +22,18 @@ export class ProductsComponent implements OnInit {
   }
 
   onDelete(product: Product) : any {
-    console.log("Delete " + product._id);
+    this.productService.deleteProduct(product._id).subscribe((res) => {
+      console.log(res.status);
+      if(res.status == "success"){
+        console.log("Delete " + product._id);
+        window.location.reload();
+      }else{
+        console.log("Deletion of " + product._id + " not successfull");
+      }
+    })
   }
   onEdit(product: Product) : any {
-    console.log("Edit " + product._id);
+    this.router.navigate(['/edit', product._id]);
   }
 
 }

@@ -15,8 +15,8 @@
       <td>{{ product.name }}</td>
       <td>{{ product.price }}</td>
       <td>{{ product.imageURL }}</td>
-      <td><button (click)="onEdit(product)">Edit</button></td>
-      <td><button (click)="onDelete(product)">Delete</button></td>
+      <td><button class="btn btn-primary" (click)="onEdit(product)">Edit</button></td>
+      <td><button class="btn btn-danger" (click)="onDelete(product)">Delete</button></td>
     </tr>
   </tbody>
 </table>
