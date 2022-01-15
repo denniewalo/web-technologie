@@ -23,8 +23,8 @@ router.route('/products/:product_id')
 
   // Order routes
 router.route('/orders')
-  .get(productController.index)
-  .post(productController.new);
+  .get(orderController.index)
+  .post(orderController.new);
 
 
 // Export API routes
