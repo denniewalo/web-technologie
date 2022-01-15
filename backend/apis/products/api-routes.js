@@ -9,6 +9,7 @@ router.get('/', function (req, res) {
 
 // Import product controller
 const productController = require('./controller/productController');
+const orderController = require('./controller/orderController');
 
 // Product routes
 router.route('/products')
@@ -19,6 +20,12 @@ router.route('/products/:product_id')
   .patch(productController.update)
   .put(productController.update)
   .delete(productController.delete);
+
+  // Order routes
+router.route('/orders')
+  .get(productController.index)
+  .post(productController.new);
+
 
 // Export API routes
 module.exports = router;
