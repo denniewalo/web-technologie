@@ -26,10 +26,14 @@ exports.new = function (req, res) {
   product.imageURL = req.body.imageURL;
 // save the product and check for errors
   product.save(function (err) {
-    res.json({
-      message: 'New product created!',
-      data: product
-    });
+    if(err) {
+      res.json(err);
+    } else {
+      res.status(201).json({
+        message: 'New product created!',
+        data: product
+      });
+    }
   });
 };
 // Handle view product info
@@ -46,21 +50,25 @@ exports.view = function (req, res) {
 // Handle update product info
 exports.update = function (req, res) {
   Product.findById(req.params.product_id, function (err, product) {
-    if (err)
+    if (err) {
       res.send(err);
-    product.id = req.body.id;
-    product.name = req.body.name;
-    product.price = req.body.price;
-    product.imageURL = req.body.imageURL;
+    }else {
+      product.id = req.body.id;
+      product.name = req.body.name;
+      product.price = req.body.price;
+      product.imageURL = req.body.imageURL;
 // save the product and check for errors
-    product.save(function (err) {
-      if (err)
-        res.json(err);
-      res.json({
-        message: 'Product Info updated',
-        data: product
+      product.save(function (err) {
+        if (err) {
+          res.json(err);
+        } else {
+          res.status(201).json({
+            message: 'Product Info updated',
+            data: product
+          });
+        }
       });
-    });
+    }
   });
 };
 
