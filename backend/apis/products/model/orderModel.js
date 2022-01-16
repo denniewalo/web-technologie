@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema({
-    orderId: {
+    ordersId: {
         type: String,
-        required = true
+        required:  true
     },
     customerId: {
         type: String,
-        required = true
+        required: true
     },
     products: {
         type: String,
-        required = true
+        required: true
     },
     price: {
         type: String,
-        required = true
+        required: true
     },
     status: {
         type: String,
-        required = true
+        required: true
     }
 });
 const Order = module.exports = mongoose.model('order', orderSchema);

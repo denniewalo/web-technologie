@@ -25,7 +25,7 @@ export class OrdersComponent implements OnInit {
   onFormSubmit(): void {
     // @ts-ignore
     this.orderService.createOrder(this.ordersForm.get("ordersId").value, this.ordersForm.get("customerId").value,this.ordersForm.get("products").value, this.ordersForm.get("price").value, this.ordersForm.get("status").value).subscribe((res) => {
-      if (res.message == "New Order created!"){
+      if (res.message == "New order created!"){
         console.log("New Order created")
         this.router.navigate(['/orders']);
       }else{

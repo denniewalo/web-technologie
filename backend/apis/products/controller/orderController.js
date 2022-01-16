@@ -19,14 +19,17 @@ exports.index = function (req, res) {
 
 // Handle create product actions
 exports.new = function (req, res) {
+    console.log(req.body);
     const order = new Order();
-    order.orderId = req.body.orderId;
-    order.customerId = "";
+    order.ordersId = req.body.ordersid;
+    order.customerId = "2";
     order.products = req.body.products;
     order.price = req.body.price;
     order.status = req.body.status;
   // save the product and check for errors
+  console.log(order);
     order.save(function (err) {
+      if(err){console.log(err)}
       res.json({
         message: 'New order created!',
         data: order

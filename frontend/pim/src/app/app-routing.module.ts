@@ -6,6 +6,7 @@ import {LoginComponent} from "./pages/login/login.component";
 import {LogoutComponent} from "./pages/logout/logout.component";
 import {NewProductComponent} from "./pages/new-product/new-product.component";
 import {EditProductComponent} from "./pages/edit-product/edit-product.component";
+import { OrdersComponent } from './pages/orders/orders.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent},
   { path: 'create', component: NewProductComponent},
   { path: 'edit/:id', component: EditProductComponent},
+  { path: 'orders',component:OrdersComponent}
 ];
 
 @NgModule({

@@ -11,9 +11,9 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  createOrder(orderId: string, customerId: string, products: string, price: string,status: string): Observable<{message: string, data: Orders}>{
+  createOrder(ordersId: string, customerId: string, products: string, price: string,status: string): Observable<{message: string, data: Orders}>{
     const newOrder = {
-      "orderid": orderId,
+      "ordersid": ordersId,
       "customerId": customerId,
       "products": products,
       "price": price,

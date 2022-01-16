@@ -1,6 +1,6 @@
 export interface Orders {
     _id: string;
-    orderId: string;
+    ordersId: string;
     customerId: string;
     products: string;
     price: string;
