@@ -1,0 +1,31 @@
+.item {
+    background-color: rgb(216, 208, 216);
+    margin: 0 0.5em 0.5em 0;
+}
+
+#leftbox {
+    float:left; 
+  
+    width:80%;
+    height:3em;
+}
+#middlebox{
+    float:left; 
+
+    width:10%;
+    height:3em;
+}
+#rightbox{
+    float:right;
+
+    width:10%;
+    height:3em;
+}
+
+h1 {
+    margin: 0.5em 1em 0.5em 0.2em;
+}
+
+div {
+    padding: 0.7em 1em;
+}

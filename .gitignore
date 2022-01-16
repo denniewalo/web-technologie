@@ -98,3 +98,7 @@ dist
 
 # TernJS port file
 .tern-port
+frontend/oms/package-lock.json
+frontend/pim/package-lock.json
+frontend/pim/package-lock.json
+frontend/pim/package-lock.json
