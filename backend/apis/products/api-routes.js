@@ -19,6 +19,7 @@ router.route('/products/:product_id')
   .patch(productController.update)
   .put(productController.update)
   .delete(productController.delete);
-
+router.route('/images')
+  .post(productController.image);
 // Export API routes
 module.exports = router;

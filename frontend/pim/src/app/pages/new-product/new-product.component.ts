@@ -15,7 +15,9 @@ export class NewProductComponent implements OnInit {
     "id": new FormControl(),
     "name": new FormControl(),
     "price": new FormControl(),
-    "imageURL": new FormControl()
+    "file": new FormControl(),
+    "fileSource": new FormControl(),
+    "imageURL": new FormControl(),
   });
 
   constructor(private router: Router,
@@ -29,7 +31,10 @@ export class NewProductComponent implements OnInit {
 
   onFormSubmit(): void {
     // @ts-ignore
-    this.productService.createProduct(this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value, this.productForm.get("imageURL").value).subscribe((res) => {
+    console.log(this.productForm.get("fileSource").value);
+    // @ts-ignore
+    this.productService.createProduct(this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value + "$", this.productForm.get("fileSource").value)
+      .subscribe((res) => {
       if (res.message == "New product created!"){
         this.showToastr(true);
         this.router.navigate(['/products']);
@@ -39,7 +44,22 @@ export class NewProductComponent implements OnInit {
     })
   }
 
-  showToastr(isCreated: boolean) {
+ get f(){
+    return this.productForm.controls;
+  }
+
+onFileChange($event: Event) {
+    // @ts-ignore
+    if (event.target.files.length > 0) {
+      // @ts-ignore
+      const file = event.target.files[0];
+      this.productForm.patchValue({
+        fileSource: file
+      });
+    }
+  }
+
+showToastr(isCreated: boolean) {
     if(isCreated) {
       this.toastr.success("Product created!", "ProductService");
     } else {
@@ -49,5 +69,4 @@ export class NewProductComponent implements OnInit {
       });
     }
   }
-
 }
