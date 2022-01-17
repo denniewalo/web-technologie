@@ -1,5 +1,9 @@
 <div class="container-sm" style="margin-top: 40px">
-    <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">
+    <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+      <div class="mb-3">
+        <label for="SKU" class="form-label">Fullname</label>
+        <input formControlName="fullname" type="text" class="form-control" id="fullname">
+      </div>
       <div class="mb-3">
         <label for="name" class="form-label">Username</label>
         <input formControlName="username" type="text" class="form-control" id="username">
@@ -8,6 +12,6 @@
         <label for="price" class="form-label">Password</label>
         <input formControlName="password" type="password" class="form-control" id="password">
       </div>
-      <button type="submit" class="btn btn-dark">Login</button>
+      <button type="submit" class="btn btn-dark">Create</button>
     </form>
 </div>
