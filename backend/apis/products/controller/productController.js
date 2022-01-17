@@ -26,8 +26,8 @@ exports.new = async function (req, res) {
   product.imageURL = req.body.imageURL;
   // save image
   try {
-    if(!req.files) {
-     console.log("no file");
+    if (!req.files) {
+      console.log("no file");
     } else {
       //Use the name of the input field (i.e. "productImage") to retrieve the uploaded file
       let productImage = req.files.productImage;
@@ -43,6 +43,7 @@ exports.new = async function (req, res) {
       message: 'New product created!',
       data: product
     });
+  });
 };
 // Handle view product info
 exports.view = function (req, res) {
@@ -96,32 +97,3 @@ exports.delete = function (req, res) {
   });
 };
 
-exports.image = async function (req, res) {
-  try {
-    if(!req.files) {
-      res.send({
-        status: false,
-        message: 'No file uploaded'
-      });
-    } else {
-      //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-      let productImage = req.files.productImage;
-
-      //mv saves the images in a specific folder
-      productImage.mv('./../../../frontend/images/' + productImage.name);
-
-      //send response
-      res.send({
-        status: true,
-        message: 'File is uploaded',
-        data: {
-          name: productImage.name,
-          mimetype: productImage.mimetype,
-          size: productImage.size
-        }
-      });
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
