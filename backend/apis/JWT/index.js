@@ -1,7 +1,9 @@
-const express   = require('express')
-const connectDB = require('./db/db')
-const cors      = require('cors')
-const bodyParser= require('body-parser')
+const express       = require('express')
+const connectDB     = require('./db/db')
+const cors          = require('cors')
+const bodyParser    = require('body-parser')
+//const cookieParser  = require('cookie-parser')
+
 require('dotenv').config()
 
 const app   = express()
@@ -11,6 +13,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 app.use(bodyParser.json())
+
+//app.use(cookieParser)
 
 connectDB()
 
@@ -24,10 +28,6 @@ app.use('/user', apiRoutes);
 app.get('/', (req, res) => {
     res.send('You can find all resources under /user');
 });
-
-/*app.get('/register', (req, res) => {
-    res.send('Register---');
-});*/
 
 app.listen(
     PORT, 

@@ -17,12 +17,15 @@ router.get('/', function (req, res) {
 const userController = require('./user/controller/user.controller')
 
 router.route('/register')
-.post(userController.newUser)
+.post(userController.register)
 
 router.route('/login')
 .post(userController.login)
 
-//router.route('/logout')
-//.post(userController.delete)
+router.route('/refresh')
+.post(userController.refreshToken)
+
+router.route('/logout')
+.post(userController.logout)
 
 module.exports = router;

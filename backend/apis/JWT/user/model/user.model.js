@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 const { stringify } = require('uuid')
 
 const userSchema = mongoose.Schema({
-    id: { type: String, require: true },
-    fullname: { type: String, require: true },
-    username: { type: String, require: true },
-    password: { type: String, require: true },
-    role: { type: String, require: true },
-    accesToken: {type: String, reguire: true}
+    id:         { type: String, require: true },
+    fullname:   { type: String, require: true },
+    username:   { type: String, require: true },
+    password:   { type: String, require: true },
+    saltid:     {type: String, require: true},
+    role:       { type: String, require: true }
 })
 
 

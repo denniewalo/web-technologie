@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
+import { Router } from '@angular/router'
 import { UserService } from "../../services/userService/user.service"
 
 @Component({
@@ -10,7 +10,7 @@ import { UserService } from "../../services/userService/user.service"
 })
 export class RegisterComponent implements OnInit {
 
-  userForm = new FormGroup({
+  registerForm = new FormGroup({
     "fullname": new FormControl(),
     "username": new FormControl(),
     "password": new FormControl()
@@ -23,9 +23,10 @@ export class RegisterComponent implements OnInit {
 
   onFormSubmit(): void {
     // @ts-ignore
-    this.userService.registerUser(this.userForm.get("fullname").value, this.userForm.get("username").value, this.userForm.get("password").value ).subscribe((res) => {
+    this.userService.registerUser(this.registerForm.get("fullname").value, this.registerForm.get("username").value, this.registerForm.get("password").value ).subscribe((res) => {
+      if(res.message == "created") {
         this.router.navigate(['/login'])
+      }
     })
   }
-
 }

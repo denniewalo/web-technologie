@@ -1,35 +1,48 @@
 const jwt   = require('jsonwebtoken')
-const uuid  = require('uuid')
-bcrypt      = require('bcrypt')
-User        = require('../model/user.model')
-RefreshToken= require('../model/refreshToken.model')
+auth          = require('../../auth/auth')
+uuid          = require('uuid')
+bcrypt        = require('bcrypt')
+User          = require('../model/user.model')
+RefreshToken  = require('../model/refreshToken.model')
+Salt          = require('../model/salt.model')
 
 
-const access    = 'access'
-const refresh   = 'refresh'
-
-const token     = {username: "", password: ""}
+const saltRounds = 10
+const token     = { username: "", password: "" }
 
 
-exports.newUser = async function (req, res) {
+exports.register = async function (req, res) {
 
-    // encrypt das pw des users
-    const salt      = await bcrypt.genSalt()
-    const hashedPw  = await bcrypt.hash(req.body.password, salt)
+    const userexist = await findUserWithName(req.body.username)
 
-    // build user
-    const user      = new User()
-    user.id         = uuid.v4()
-    user.fullname   = req.body.fullname
-    user.username   = req.body.username
-    user.password   = hashedPw
-    user.role       = "user-group"
+    if(userexist) return res.json({ message: 'exist' })
 
+    const salt  = await genSalt()
+    if(!salt)   return res.send("Es konnte kein Salt generiert werden. <Register>")
+
+    const hashedPw  = await hashPw(req.body.password, salt.genSalt)
+    if(!hashedPw)   return res.send("Es konnte kein Passwort verschlüsselt werden. <Register>")
+
+    // erstelle User
+    const user          = new User()
+    user.id             = uuid.v4()
+    user.fullname       = req.body.fullname
+    user.username       = req.body.username
+    user.password       = hashedPw
+    user.saltid         = salt.saltId
+    user.role           = req.body.role
+
+    // erstelle token für das generieren einen AccessTokens
+    token.username      = req.body.username
+    token.username      = hashedPw
+    const accesToken    = auth.generateAccessToken(token)
+
+    // speicher User
     user.save( function (err) {
-        if (err) res.sendStatus(503).send("User konnte nicht erstellt werden. <Register>")
-        res.json({
-            message: "New User created",
-            data: user
+        if (err) res.send("User konnte nicht erstellt werden. <Register>")
+        res.status(201).json({
+            message: 'created',
+            data: { user, accesToken }
         })
     })
 }
@@ -37,116 +50,166 @@ exports.newUser = async function (req, res) {
 
 exports.login = async function (req, res) {
     
-    const salt      = await bcrypt.genSalt()
-    const hashedPw  = await bcrypt.hash(req.body.password, salt)
-    const newuser = new User()
+    const user = await findUserWithName(req.body.username)
+    if (!user) return res.send("Es konnte kein User gefunden werden! <Login>")
 
-    User.find({ name: req.body.username, name: hashedPw }, async function(err, user) {
+    if(user.role != "admin-group") return res.sendStatus(401)
+
+    const salt = await findSaltById(user.saltid)
+    if (!salt) return res.send("Es konnte kein Salt gefunden werden! <Login>")
+
+    const hashedPw  = await hashPw(req.body.password, salt.salt)
+    if(!hashedPw)   return res.send("Es konnte kein Passwort verschlüsselt werden! <Login>")
+
+    const compPWResult = await comparePasswords(req.body.password, hashedPw)
+    if (!compPWResult) return res.json({ status: 'denied' })
+     
     
-        console.log("FINDUSER: ", user[0])
-        
-        if(user[0] == undefined) { 
-            console.log("USER NICHT GEFUNDEN")
-            return res.status(500).send("Kein User gefunden! <Login1>")
-        } else {
-            console.log("USER GEFUNDEN",user[0])
-            newuser = user[0]
-        }
-    })
-
-    console.log("NEWSUER: ", newuser)
-
-    // Autentification
-    if (await bcrypt.compare(hashedPw, newuser.password)) {
-        console.log("Access")
-        
-        //res.sendStatus('Access')
-        //next()
-    } else {
-        console.log("Denied")
-        return res.sendStatus('Not allowed')
-    }
-
+    // erstelle AccessToken
     token.username      = req.body.username
     token.password      = hashedPw
-    const accessToken   = generateToken(token, access)
+    const accessToken   = auth.generateAccessToken(token)
+
+    const findRefreshT = await findRefreshToken(user.id)
+    if(findRefreshT) {
+        await deleteRefreshTokenByUserId(user.id)
+    }
 
     const refreshToken  = new RefreshToken()
-    refreshToken.userid = userID
-    refreshToken.token  = generateToken(token, refresh)
-
-    // save refreshToken
-    refreshToken.save( function (err) {
-        if (err) res.sendStatus(500).send("RefreshToken konnte nicht gespeichert werden. <Login2>", err)
-    })
+    refreshToken.id = user.id
+    refreshToken.token  = auth.generateRefreshToken(token)
+    await saveRefreshToken(refreshToken)
     res.json({
-        message: "New AccessToken and RefreshToken created",
-        data: {accessToken, refreshToken}
+        status: 'access',
+        token: [ accessToken, user.id ]
     })
-    console.log("Refreshtoken created!")
-    
 }
 
 
 exports.logout = function (req, res) {
+    deleteRefreshTokenByUserId(req.body.id)
+    res.json({ status: 'logout' })
+}
 
-    RefreshToken.deleteOne({ _id: req.params.redreshToken_id}, function (err, contact) {
-        if (err) {
-          res.send(err)
-          return
-        }
-        res.json({
-          status: "success",
-          message: 'RefreshToken deleted'
+
+exports.refreshToken = async function(req, res) {
+
+    const user = await findUserWithId(req.body.userid)
+    if(!user) return res.sendStatus(401)
+
+    const refreshToken = await findRefreshToken(user.id)
+    if (!refreshToken) return res.sendStatus(403)
+    
+    const accessToken = await new Promise((resolve, reject) => {
+        jwt.verify(refreshToken.token, process.env.REFRESH_TOKEN_SECRET, (err, result) => {
+
+            if(err) return res.sendStatus(403)
+            token.username = user.username
+            token.password = user.password
+            const accessToken = auth.generateAccessToken(token)
+
+            resolve(accessToken)
         })
     })
+    res.json({ token: [accessToken, user.id] })
 }
 
-exports.refreshToken = function(req, res) {
+// Datenbank Hilfsmethoden ---------------------------------------------------------- //////////
 
-    const refreshToken = req.body.token
+async function genSalt() {
+    const salt = await new Promise((resolve, reject) => {
+        bcrypt.genSalt(saltRounds, function(err, salt) {  
+            if (err) return console.log(err) 
 
-    if(refreshToken === null) return res.sendStatus(401)
-    if (!RefreshToken.includes(refreshToken)) return res.sendStatus(403)
-
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-
-        if(err) return res.sendStatus(403)
-
-        const accessToken = generateAccessToken({ name: user.name })
-        res.json({ accessToken: accessToken })
+            const newSalt   = new Salt()
+            newSalt.id      = uuid.v4()
+            newSalt.salt    = salt
+            newSalt.save( function (err) {
+                if (err) res.sendStatus(503).send(err)
+            })
+            const result = { saltId: newSalt.id, genSalt: salt }
+            resolve(result)
+        })
     })
+    return salt
 }
 
-
-// Hilfsmethoden
-/*async function createRefreshToken(id,token, res) {
-    console.log("CreateRefreshToken: ", id, token)
-
-    const refreshToken = new RefreshToken()
-    refreshToken.userId = id
-    refreshToken.refreshToken = generateToken(token, refresh)
-    
-    res.json({
-        message: "New RefreshToken created",
-        data: refreshToken
+async function hashPw(pw, salt) {
+    const hashedPw = await new Promise((resolve, reject) => {
+        bcrypt.hash(pw, salt,  function(err, hash) {
+            if (err) return console.log(err)
+            resolve(hash)
+        })
     })
-    console.log("RefreshToken created!")
-}*/
+    return hashedPw
+}
 
-function generateToken(token, tokenType) {
+async function findUserWithName(username) {
+    const user = await new Promise((resolve, reject) => {
+        User.find({username: username}, async function (err, user) {
+            if (err) return console.log(err)
+            resolve(user)
+        })
+    })
+    return user[0]
+}
 
-    const username = token.username
-    const userpw = token.password
+async function findUserWithId(userid) {
+    const user = await new Promise((resolve, reject) => {
+        User.find({id: userid}, async function (err, user) {
+            if (err) return console.log(err)
+            resolve(user)
+        })
+    })
+    return user[0]
+}
 
-    if(tokenType === 'access') {
-        return jwt.sign(
-            {username, userpw}, 
-            process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m"})
-    }
-    if(tokenType === 'refresh') {
-        return jwt.sign(
-            {username, userpw}, 
-            process.env.REFRESH_TOKEN_SECRET)
-    }
+async function findSaltById(saltid) {
+    const salt = await new Promise((resolve, reject) => {
+        Salt.find({id: saltid}, async function (err, salt) {
+            if (err) return console.log(err)
+            resolve(salt)
+        })
+    })
+    return salt[0]
+}
+
+async function comparePasswords(userPw, hashedPw) {
+    const result = await new Promise((resolve, reject) => {
+        bcrypt.compare(userPw, hashedPw, function(err, result) {
+            if (result) resolve(true)
+            else resolve(false)
+        })
+    })
+    return result
+}
+
+async function findRefreshToken(userid) {
+    const refreshToken = await new Promise((resolve, reject) => {
+        RefreshToken.find({ id: userid }, async function (err, res) {
+            if (err) return console.log(err)
+            resolve(res)
+        })
+    })
+    return refreshToken[0]
+}
+
+async function saveRefreshToken(refreshToken) {
+    await new Promise((resolve, reject) => {
+        refreshToken.save( async function(err, res) {
+            if (err) return console.log(err)
+            resolve(res)
+        })
+    })
+    return
+}
+
+async function deleteRefreshTokenByUserId(userId) {
+    await new Promise((resolve, reject) => {
+        RefreshToken.deleteOne({id: userId}, async function(err, res) {
+            if (err) return console.log(err)
+            resolve()
+        })
+    })
+    return
 }
