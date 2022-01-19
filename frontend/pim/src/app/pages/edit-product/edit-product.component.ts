@@ -13,6 +13,7 @@ import {ProductService} from "../../services/product.service";
 export class EditProductComponent implements OnInit {
   productForm : any;
   product_id : any;
+  product_image_url : any;
   isEdited: boolean = false;
 
   constructor(private route: ActivatedRoute,
@@ -26,28 +27,43 @@ export class EditProductComponent implements OnInit {
       "id": new FormControl(),
       "name": new FormControl(),
       "price": new FormControl(),
-      "imageURL": new FormControl()
+      "imageURL": new FormControl(),
+      "file": new FormControl(),
+      "fileSource": new FormControl(),
     });
     this.productService.getProductById(this.product_id).subscribe((res) => {
       this.productForm.patchValue({
         "id": res.data.id,
         "name": res.data.name,
-        "price": res.data.price,
+        "price": res.data.price.slice(0, -1),
         "imageURL": res.data.imageURL,
       });
+      this.product_image_url = "assets/images/" + this.productForm.get("imageURL").value;
     })
   }
 
   onFormSubmit(): void {
-    this.productService.updateProduct(this.product_id, this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value, this.productForm.get("imageURL").value).subscribe((res) => {
-      if (res.message == "Product Info updated"){
-        this.showToastr(true);
-        this.router.navigate(['/products']);
-        this.isEdited = true;
-      } else {
-        this.showToastr(false);
-      }
-    })
+    if (this.productForm.get("fileSource").value != null) {
+      this.productService.updateProductWithNewImage(this.product_id, this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value, this.productForm.get("fileSource").value).subscribe((res) => {
+        if (res.message == "Product Info updated"){
+          this.showToastr(true);
+          this.router.navigate(['/products']);
+          this.isEdited = true;
+        } else {
+          this.showToastr(false);
+        }
+      })
+    }else {
+      this.productService.updateProduct(this.product_id, this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value, this.productForm.get("imageURL").value).subscribe((res) => {
+        if (res.message == "Product Info updated"){
+          this.showToastr(true);
+          this.router.navigate(['/products']);
+          this.isEdited = true;
+        } else {
+          this.showToastr(false);
+        }
+      });
+    }
   }
 
   showToastr(isCreated: boolean) {
@@ -60,5 +76,18 @@ export class EditProductComponent implements OnInit {
       });
     }
   }
+  get f(){
+    return this.productForm.controls;
+  }
 
+  onFileChange($event: Event) {
+    // @ts-ignore
+    if (event.target.files.length > 0) {
+      // @ts-ignore
+      const file = event.target.files[0];
+      this.productForm.patchValue({
+        fileSource: file
+      });
+    }
+  }
 }

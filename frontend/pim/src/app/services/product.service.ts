@@ -43,4 +43,15 @@ export class ProductService {
     return this.http.patch<{message: string, data: Product}>(this.productURL + "/" + product_id, updateProduct);
   }
 
+  updateProductWithNewImage(product_id: string, productId: string, productName: string, productPrice: string, file: any): Observable<{message: string, data: Product}>{
+    const formData = new FormData();
+    formData.append("id", productId);
+    formData.append("name", productName);
+    formData.append("price", productPrice);
+    formData.append("imageURL", file.name);
+    formData.append("productImage", file);
+
+    return this.http.patch<any>(this.productURL + "/" + product_id, formData);
+  }
+
 }

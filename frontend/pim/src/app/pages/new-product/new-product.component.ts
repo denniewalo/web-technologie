@@ -33,7 +33,7 @@ export class NewProductComponent implements OnInit {
     // @ts-ignore
     console.log(this.productForm.get("fileSource").value);
     // @ts-ignore
-    this.productService.createProduct(this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value + "$", this.productForm.get("fileSource").value)
+    this.productService.createProduct(this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value, this.productForm.get("fileSource").value)
       .subscribe((res) => {
       if (res.message == "New product created!"){
         this.showToastr(true);
