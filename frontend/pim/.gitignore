@@ -47,3 +47,6 @@ Thumbs.db
 
 # Remove Package-lock json
 .package-lock.json
+
+# Remove Package-lock json
+.package-lock.json
