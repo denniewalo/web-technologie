@@ -19,14 +19,14 @@ export class ProductService {
     return this.http.delete<{message: string, status: string}>(this.productURL + "/" + productId);
   };
 
-  createProduct(productId: string, productName: string, productPrice: string, productImageURL: string): Observable<{message: string, data: Product}>{
-    const newProduct = {
-      "id": productId,
-      "name": productName,
-      "price": productPrice,
-      "imageURL": productImageURL
-    }
-    return this.http.post<{message: string, data: Product}>(this.productURL, newProduct);
+  createProduct(productId: string, productName: string, productPrice: string, file: any): Observable<{message: string, data: Product}>{
+    const formData = new FormData();
+    formData.append("id", productId);
+    formData.append("name", productName);
+    formData.append("price", productPrice);
+    formData.append("imageURL", file.name);
+    formData.append("productImage", file);
+    return this.http.post<any>(this.productURL, formData);
   }
 
   getProductById(productId: string | undefined): Observable<{ message: string; data: Product }> {
@@ -41,6 +41,17 @@ export class ProductService {
       "imageURL": productImageURL
     }
     return this.http.patch<{message: string, data: Product}>(this.productURL + "/" + product_id, updateProduct);
+  }
+
+  updateProductWithNewImage(product_id: string, productId: string, productName: string, productPrice: string, file: any): Observable<{message: string, data: Product}>{
+    const formData = new FormData();
+    formData.append("id", productId);
+    formData.append("name", productName);
+    formData.append("price", productPrice);
+    formData.append("imageURL", file.name);
+    formData.append("productImage", file);
+
+    return this.http.patch<any>(this.productURL + "/" + product_id, formData);
   }
 
 }

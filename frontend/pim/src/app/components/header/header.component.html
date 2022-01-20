@@ -7,10 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/products">Products</a>
+          <a class="nav-link" (click)="isLoggedIn('products')">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/create">Create</a>
+          <a class="nav-link" (click)="isLoggedIn('create')">Create</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/orders">Create Order</a>
@@ -18,8 +18,12 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/login">Login</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/register">Register</a>
+        </li>
       </ul>
     </div>
+    <button class="btn btn-dark logout" (click)="logout()">Logout</button>
     <form class="d-flex">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success" type="submit">Search</button>

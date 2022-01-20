@@ -1,6 +1,9 @@
 <div class="container-sm" style="margin-top: 40px">
   <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
     <div class="mb-3">
+      <img [src]="product_image_url" widht="300px" height="250px" alt="Product image could not be loaded, try to refresh the page!">
+    </div>
+    <div class="mb-3">
       <label for="SKU" class="form-label">Product SKU</label>
       <input formControlName="id" type="number" class="form-control" id="SKU" value = "test" placeholder="Enter SKU">
     </div>
@@ -13,8 +16,13 @@
       <input formControlName="price" type="number" class="form-control" id="price">
     </div>
     <div class="mb-3">
-      <label for="imageURL" class="form-label">Product ImageURL</label>
-      <input formControlName="imageURL" type="text" class="form-control" id="imageURL">
+      <label for="file" class="form-label">New product image</label>
+      <input
+        formControlName="file"
+        type="file"
+        class="form-control"
+        id="file"
+        (change)="onFileChange($event)">
     </div>
     <button type="submit" class="btn btn-dark">Update</button>
   </form>

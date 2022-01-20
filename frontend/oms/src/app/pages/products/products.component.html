@@ -1,0 +1,17 @@
+<div class="grid-container">
+  <h1 class="mat-h1">Products</h1>
+  <mat-grid-list cols="4" rowHeight="600px">
+    <mat-grid-tile *ngFor="let product of products " [colspan]="1" [rowspan]="1">
+      <mat-card >
+        <div class="img-container">
+          <img mat-card-image src="{{imageBaseUrl + product.imageURL}}" alt="Photo of a Shiba Inu">
+        </div>
+        <div class="img-container">
+          <div id="leftbox"><p>{{product.name}}</p></div>
+          <div id="middlebox"><p>{{product.price}}</p></div>
+          <div id="rightbox"><button class="b" (click)="addToCart(product)"><span>Buy</span></button></div>
+        </div>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

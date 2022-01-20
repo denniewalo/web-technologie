@@ -1,0 +1,22 @@
+#leftbox {
+    float:left; 
+  
+    width:80%;
+    height:3em;
+}
+#middlebox{
+    float:left; 
+
+    width:10%;
+    height:3em;
+}
+#rightbox{
+    float:right;
+
+    width:10%;
+    height:3em;
+}
+
+div {
+    padding: 0.7em 1em;
+}

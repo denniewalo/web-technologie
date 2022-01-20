@@ -1,0 +1,45 @@
+###
+
+GET http://localhost:3000/post
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjQxNzY5MTE1LCJleHAiOjE2NDE3NjkxNzV9.IcTzXHerY3IFoDisk38y5CNj_GkDUb68ERWdpBf7lDA
+
+### refreshToken
+
+DELETE http://localhost:4500/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjQxNzY5MTE1fQ.sEjOYFP6PUZz6rnWgFiBx-3Jiz5g_W8sPunAmtNZUi8"
+}
+
+### refreshToken
+
+POST http://localhost:4500/token 
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmltIiwiaWF0IjoxNjQxNzY5MTE1fQ.sEjOYFP6PUZz6rnWgFiBx-3Jiz5g_W8sPunAmtNZUi8"
+}
+###
+
+POST http://localhost:4500/login
+Content-Type: application/json
+
+{
+    "username": "Jim"
+}
+
+###
+
+###
+
+POST http://localhost:4500/user/register
+Content-Type: application/json
+
+{
+    "fullname": "Hans Loffel",
+    "username": "hansderhecht",
+    "password": "123"
+}
+
+###

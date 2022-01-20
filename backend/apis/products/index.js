@@ -6,9 +6,10 @@ const bodyParser   = require('body-parser');
 const mongoose     = require('mongoose');
 const swaggerUI    = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-const specs = require('./swagger/swagger.json');
+const specs        = require('./swagger/swagger.json');
 const app          = express();
 const cors         = require('cors');
+const fileUpload   = require('express-fileupload');
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 // Configure bodyparser to handle post requests
@@ -17,6 +18,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(cors());
+
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 //Connect to mongoose
 mongoose.connect(process.env.DB_PRODUCTS,{ useNewUrlParser: true});

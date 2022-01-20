@@ -18,14 +18,28 @@ exports.index = function (req, res) {
 };
 
 // Handle create product actions
-exports.new = function (req, res) {
+exports.new = async function (req, res) {
   const product = new Product();
   product.id = req.body.id;
   product.name = req.body.name;
-  product.price = req.body.price;
+  product.price = req.body.price + "€";
   product.imageURL = req.body.imageURL;
+  // save image
+  try {
+    if (!req.files) {
+      console.log("no file" + " : New");
+    } else {
+      //Use the name of the input field (i.e. "productImage") to retrieve the uploaded file
+      let productImage = req.files.productImage;
+      //mv saves the images in a specific folder
+      productImage.mv('./../../../frontend/pim/src/assets/images/' + productImage.name);
+      productImage.mv('./../../../frontend/oms/src/assets/images/' + productImage.name);
+    }
+  } catch (err) {
+    console.log(err)
+  }
 // save the product and check for errors
-  product.save(function (err) {
+  await product.save(function (err) {
     res.json({
       message: 'New product created!',
       data: product
@@ -45,22 +59,40 @@ exports.view = function (req, res) {
 };
 // Handle update product info
 exports.update = function (req, res) {
-  Product.findById(req.params.product_id, function (err, product) {
-    if (err)
+  // save image
+  try {
+    if (!req.files) {
+      console.log("no file" + " : Update");
+    } else {
+      //Use the name of the input field (i.e. "productImage") to retrieve the uploaded file
+      let productImage = req.files.productImage;
+      //mv saves the images in a specific folder
+      productImage.mv('./../../../frontend/pim/src/assets/images/' + productImage.name);
+      productImage.mv('./../../../frontend/oms/src/assets/images/' + productImage.name);
+    }
+  } catch (err) {
+    console.log(err)
+  }
+  Product.findById(req.params.product_id, async function (err, product) {
+    if (err) {
       res.send(err);
-    product.id = req.body.id;
-    product.name = req.body.name;
-    product.price = req.body.price;
-    product.imageURL = req.body.imageURL;
+    } else {
+      product.id = req.body.id;
+      product.name = req.body.name;
+      product.price = req.body.price + "€";
+      product.imageURL = req.body.imageURL;
 // save the product and check for errors
-    product.save(function (err) {
-      if (err)
-        res.json(err);
-      res.json({
-        message: 'Product Info updated',
-        data: product
+      await product.save(function (err) {
+        if (err) {
+          res.json(err);
+        } else {
+          res.status(201).json({
+            message: 'Product Info updated',
+            data: product
+          });
+        }
       });
-    });
+    }
   });
 };
 
@@ -79,3 +111,4 @@ exports.delete = function (req, res) {
     });
   });
 };
+
