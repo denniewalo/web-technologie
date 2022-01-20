@@ -17,12 +17,12 @@ exports.index = function (req, res) {
     });
   };
 
-// Handle create product actions
+// Handle create order actions
 exports.new = function (req, res) {
     console.log(req.body);
     const order = new Order();
-    order.ordersId = req.body.ordersid;
-    order.customerId = "2";
+    order.ordersId = Date.now();
+    order.customerId = req.body.customerId;
     order.products = req.body.products;
     order.price = req.body.price;
     order.status = req.body.status;

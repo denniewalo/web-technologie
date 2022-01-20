@@ -1,10 +1,6 @@
 <div class="container-sm" style="margin-top: 40px">
     <form [formGroup]="ordersForm" (ngSubmit)="onFormSubmit()">
       <div class="mb-3">
-        <label for="ordersId" class="form-label">order orderId</label>
-        <input formControlName="ordersId" type="number" class="form-control" id="ordersId">
-      </div>
-      <div class="mb-3">
         <label for="customerId" class="form-label">order customerId</label>
         <input formControlName="customerId" type="text" class="form-control" id="customerId">
       </div>
