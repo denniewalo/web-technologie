@@ -1,16 +1,15 @@
-
 <div class="grid-container">
   <h1 class="mat-h1">Products</h1>
   <mat-grid-list cols="4" rowHeight="600px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="1" [rowspan]="1">
       <mat-card class="dashboard-card">
         <div class="img-container">
           <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
           <div ><button class="btn" >+</button></div>
         </div>
         <div class="img-container">
-          <div id="leftbox"><p>Insert your product name</p></div>
-          <div id="rightbox"><button class="b" >999€</button></div>
+          <div id="leftbox"><p>product name</p></div>
+          <div id="rightbox"><button class="b" ><span>price</span></button></div>
         </div>
       </mat-card>
     </mat-grid-tile>
