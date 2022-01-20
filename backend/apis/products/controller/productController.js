@@ -33,6 +33,7 @@ exports.new = async function (req, res) {
       let productImage = req.files.productImage;
       //mv saves the images in a specific folder
       productImage.mv('./../../../frontend/pim/src/assets/images/' + productImage.name);
+      productImage.mv('./../../../frontend/oms/src/assets/images/' + productImage.name);
     }
   } catch (err) {
     console.log(err)
@@ -67,6 +68,7 @@ exports.update = function (req, res) {
       let productImage = req.files.productImage;
       //mv saves the images in a specific folder
       productImage.mv('./../../../frontend/pim/src/assets/images/' + productImage.name);
+      productImage.mv('./../../../frontend/oms/src/assets/images/' + productImage.name);
     }
   } catch (err) {
     console.log(err)
