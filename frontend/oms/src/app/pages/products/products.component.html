@@ -8,8 +8,8 @@
         </div>
         <div class="img-container">
           <div id="leftbox"><p>{{product.name}}</p></div>
-          <div id="middlebox"><p>{{product.price}}€</p></div>
-          <div id="rightbox"><button class="b" ><span>buy</span></button></div>
+          <div id="middlebox"><p>{{product.price}}</p></div>
+          <div id="rightbox"><button class="b" (click)="addToCart(product)"><span>Buy</span></button></div>
         </div>
       </mat-card>
     </mat-grid-tile>
