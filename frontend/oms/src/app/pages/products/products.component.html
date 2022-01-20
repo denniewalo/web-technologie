@@ -1,28 +1,17 @@
-<p>products works!</p>
-
+<div *ngIf="products">
+  <div *ngFor="let product of products">
     <mat-card>
-    <mat-card-title>Product1</mat-card-title>
-    <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="photo of cute doggo">
-    <mat-card-content>
+      <mat-card-title>{{product.name}}</mat-card-title>
+      <img mat-card-sm-image src="{{imageBaseUrl + product.imageURL}}" alt="photo of cute doggo">
+      <mat-card-content>
         <div>
-            <h6>shiba</h6>
-            <p>xxx.xx€</p>
+          <h6>SKU: {{product.id}}</h6>
+          <p>Preis: {{product.price}}</p>
         </div>
-    </mat-card-content>
-    <mat-card-actions>
+      </mat-card-content>
+      <mat-card-actions>
         <button mat-button>buy</button>
-    </mat-card-actions>
-</mat-card>
-<mat-card>
-    <mat-card-title>Product1</mat-card-title>
-    <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="photo of cute doggo">
-    <mat-card-content>
-        <div>
-            <h6>shiba</h6>
-            <p>xxx.xx€</p>
-        </div>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button>buy</button>
-    </mat-card-actions>
-</mat-card>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

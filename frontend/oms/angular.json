@@ -75,12 +75,12 @@
               "browserTarget": "oms:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "oms:build"
+            "browserTarget": "oms:build",
           }
         },
         "test": {
