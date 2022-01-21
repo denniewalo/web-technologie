@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink="/product">Webshop</a>
+    <a class="navbar-brand" (click)="isLoggedIn('products')">Webshop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,17 +7,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/login">Login</a>
-          </li>
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/products">Products</a>
+          <a class="nav-link" (click)="isLoggedIn('products')">Products</a>
         </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/cart">Cart</a>
+        <li class="nav-item active" gnif=>
+            <a class="nav-link" (click)="isLoggedIn('cart')">Cart</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" routerLink="/orders">My Orders</a>
+            <a class="nav-link" (click)="isLoggedIn('orders')">My Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" *ngIf="!loggedIn">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/register" *ngIf="!loggedIn">Register</a>
           </li>
       </ul>
     </div>
+    <button class="btn btn-dark logout" (click)="logout()" *ngIf="!loggedOut">Logout</button>
   </nav>

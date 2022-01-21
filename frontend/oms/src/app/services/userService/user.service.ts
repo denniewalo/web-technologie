@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { User } from '../../interfaces/User'
 import { Observable } from "rxjs"
-import { CookieService } from 'ngx-cookie'
+import { User } from 'src/app/interfaces/User'
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +55,6 @@ export class UserService {
   }
 
   getGroup() {
-    return "admin-group"
+    return "user-group"
   }
 }

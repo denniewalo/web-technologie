@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = mongoose.Schema({
+const adminSchema = mongoose.Schema({
     id:         { type: String, require: true },
     fullname:   { type: String, require: true },
     username:   { type: String, require: true },
@@ -10,8 +10,8 @@ const userSchema = mongoose.Schema({
 })
 
 
-const User = module.exports = mongoose.model('user', userSchema)
+const Admin = module.exports = mongoose.model('admin', adminSchema)
 
 module.exports.get = function (callback, limit) {
-  User.find(callback).limit(limit)
+  Admin.find(callback).limit(limit)
 }

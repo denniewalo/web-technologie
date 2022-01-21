@@ -3,6 +3,7 @@ auth          = require('../../auth/auth')
 uuid          = require('uuid')
 bcrypt        = require('bcrypt')
 User          = require('../model/user.model')
+Admin          = require('../model/admin.model')
 RefreshToken  = require('../model/refreshToken.model')
 Salt          = require('../model/salt.model')
 
@@ -12,9 +13,14 @@ const token     = { username: "", password: "" }
 
 
 exports.register = async function (req, res) {
-
-    const userexist = await findUserWithName(req.body.username)
-
+    
+    let userexist = undefined
+    if(req.body.role == "admin-group") {
+        userexist = await findAdminWithName(req.body.username)
+    } else if (req.body.role == "user-group") {
+        userexist = await findUserWithName(req.body.username)
+    }
+    
     if(userexist) return res.json({ message: 'exist' })
 
     const salt  = await genSalt()
@@ -24,7 +30,13 @@ exports.register = async function (req, res) {
     if(!hashedPw)   return res.send("Es konnte kein Passwort verschlüsselt werden. <Register>")
 
     // erstelle User
-    const user          = new User()
+    let user = undefined
+    if(req.body.role == "admin-group") {
+        user      = new Admin()
+    } else if (req.body.role == "user-group")  {
+        user      = new User()
+    }
+    
     user.id             = uuid.v4()
     user.fullname       = req.body.fullname
     user.username       = req.body.username
@@ -37,34 +49,48 @@ exports.register = async function (req, res) {
     token.username      = hashedPw
     const accesToken    = auth.generateAccessToken(token)
 
-    // speicher User
-    user.save( function (err) {
-        if (err) res.send("User konnte nicht erstellt werden. <Register>")
-        res.status(201).json({
-            message: 'created',
-            data: { user, accesToken }
+    if(req.body.role == "admin-group") {
+        admin.save( function (err) {
+            if (err) res.send("User konnte nicht erstellt werden. <Register>")
+            res.status(201).json({
+                message: 'created',
+                data: { user, accesToken }
+            })
         })
-    })
+    } else if (req.body.role == "user-group") {
+        user.save( function (err) {
+            if (err) res.send("User konnte nicht erstellt werden. <Register>")
+            res.status(201).json({
+                message: 'created',
+                data: { user, accesToken }
+            })
+        })
+    }
 }
 
 
 exports.login = async function (req, res) {
     
-    const user = await findUserWithName(req.body.username)
-    if (!user) return res.send("Es konnte kein User gefunden werden! <Login>")
+    if(req.body.role != "admin-group" && req.body.role != "user-group") return res.sendStatus(401)
 
-    if(user.role != "admin-group") return res.sendStatus(401)
+    let user = undefined
+    if(req.body.role == "admin-group") {
+        user = await findAdminWithName(req.body.username)
+    } else if (req.body.role == "user-group")  {
+        user = await findUserWithName(req.body.username)
+    }
+   
+    if (!user) return res.json({ status: "Es konnte kein User gefunden werden! <Login>" })
 
     const salt = await findSaltById(user.saltid)
-    if (!salt) return res.send("Es konnte kein Salt gefunden werden! <Login>")
+    if (!salt) return res.json({ status: "Es konnte kein Salt gefunden werden! <Login>" })
 
     const hashedPw  = await hashPw(req.body.password, salt.salt)
-    if(!hashedPw)   return res.send("Es konnte kein Passwort verschlüsselt werden! <Login>")
+    if(!hashedPw)   return res.json({ status: "Es konnte kein Passwort verschlüsselt werden! <Login>" })
 
     const compPWResult = await comparePasswords(req.body.password, hashedPw)
     if (!compPWResult) return res.json({ status: 'denied' })
-     
-    
+ 
     // erstelle AccessToken
     token.username      = req.body.username
     token.password      = hashedPw
@@ -152,6 +178,26 @@ async function findUserWithName(username) {
         })
     })
     return user[0]
+}
+
+async function findAdminWithName(username) {
+    const admin = await new Promise((resolve, reject) => {
+        Admin.find({username: username}, async function (err, admin) {
+            if (err) return console.log(err)
+            resolve(admin)
+        })
+    })
+    return admin[0]
+}
+
+async function findAdminWithName(username) {
+    const admin = await new Promise((resolve, reject) => {
+        Admin.find({username: username}, async function (err, admin) {
+            if (err) return console.log(err)
+            resolve(admin)
+        })
+    })
+    return admin[0]
 }
 
 async function findUserWithId(userid) {
