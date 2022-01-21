@@ -30,3 +30,8 @@ Frontend für das Verwalten von Produkten (erstellen, löschen, bearbeiten)
 2. Führe **npm install** aus, um alle Abhängigkeiten zu installieren.
 3. Starte jwt mit **npm run login**
 
+## Webserver
+1. Navigiere zu **/backend/api/WebSocketsAPI**
+2. Führe **npm install** aus aus, um alle Abhängigkeiten zu installieren.
+3. start WebSocketAPI mit **npm start**
+
