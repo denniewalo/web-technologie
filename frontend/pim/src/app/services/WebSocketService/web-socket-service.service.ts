@@ -15,8 +15,12 @@ export class WebSocketServiceService {
     this.socket.emit('message','Hello World');
   }
 
-  productToast(){
-    this.toastr.success("Product created!", "ProductService");
+  productToast(isCreated: Boolean){
+    console.log("Bin Im Toast");
+    if(isCreated) {
+      this.toastr.success("Product created!", "ProductService");
+    }
+    
   }
 
  

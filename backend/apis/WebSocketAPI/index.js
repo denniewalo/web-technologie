@@ -13,7 +13,7 @@ const io = socketio(server,{
 io.on('connection', socket =>{
     console.log('New Ws Connection');
     socket.emit('message','Wellcome');
-    socket.on('createProduct',(msg)=>{
+    socket.on('createProdukt',(msg)=>{
         console.log(msg);
         io.emit('ProduktToast','ProduktToast');
     });
