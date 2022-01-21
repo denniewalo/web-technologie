@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Orders } from 'src/app/interfaces/Orders';
+import { OrderService } from 'src/app/services/orderService/order.service';
 import {Product} from "../../interfaces/Product";
-import {CartService} from "../../services/cart.service";
 
 
 @Component({
@@ -9,11 +10,19 @@ import {CartService} from "../../services/cart.service";
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  cart : Product[] = [];
-  constructor(private cartService: CartService) { }
+  public orders: Orders [] = [];
+
+  //public orders: Orders [] = [{"_id":"orderID","ordersId":"orderId", "customerId":"customerID","products":"products","price":"price","status":"status"}];
+
+  constructor(private orderService: OrderService) { }
 
   ngOnInit(): void {
-    this.cart = this.cartService.getCart();
+    this.orderService.getOrder().subscribe((res) => {
+      console.log(res.data);
+      this.orders = res.data;
+  });
   }
+
+  
 
 }

@@ -57,8 +57,10 @@ export class CartService {
     let tempCart: Product[] = [];
     let isRemoved: boolean = false;
     const deleteIndex = cart.findIndex(item => {
+      console.log(product.id)
       item.id == product.id
     })
+    console.log(deleteIndex);
     cart.splice(deleteIndex, 1);
     const data = JSON.stringify(cart);
     localStorage.setItem('cart', data);
