@@ -24,7 +24,17 @@ router.route('/products/:product_id')
   // Order routes
 router.route('/orders')
   .get(orderController.index)
-  .post(orderController.new);
+  .post(orderController.new)
+
+router.route('/orders/update-status')
+  .get(orderController.view)
+  .patch(orderController.update)
+
+router.route('/orders/getByID/:order_Id')
+  .get(orderController.view)
+
+  
+
 
 
 // Export API routes

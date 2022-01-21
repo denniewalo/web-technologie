@@ -23,6 +23,7 @@ export class EditProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.product_id = this.router.url.split('/').pop();
+    console.log(this.product_id);
     this.productForm = new FormGroup({
       "id": new FormControl(),
       "name": new FormControl(),

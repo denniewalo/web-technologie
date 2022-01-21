@@ -10,28 +10,34 @@ import {FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  ordersForm = new FormGroup({
-    "ordersId": new FormControl(),
+  public orders: Orders[] = [];
+  orderForm : any;
+  constructor(private router: Router, private orderService: OrderService) { }
+
+  ngOnInit(): void {
+    this.orderService.getOrder().subscribe((res) => {
+      console.log(res.data);
+      this.orders = res.data;
+  });
+    this.orderForm = new FormGroup({
+    "orderId": new FormControl(),
     "customerId": new FormControl(),
     "products": new FormControl(),
     "price": new FormControl(),
     "status": new FormControl()
   });
-  constructor(private router: Router, private orderService: OrderService) { }
+ }
 
-  ngOnInit(): void {
-  }
+ onCreate(){
+  this.orderService.createOrder(this.orderForm.get("orderId").value, this.orderForm.get("customerId").value, this.orderForm.get("products").value,this.orderForm.get("price").value, this.orderForm.get("status").value)
+  .subscribe((res) => {
+  if (res.message == "New product created!"){
+    this.router.navigate(['/orders']);
+   }
+  })
+ }
 
-  onFormSubmit(): void {
-    // @ts-ignore
-    this.orderService.createOrder(this.ordersForm.get("ordersId").value, this.ordersForm.get("customerId").value,this.ordersForm.get("products").value, this.ordersForm.get("price").value, this.ordersForm.get("status").value).subscribe((res) => {
-      if (res.message == "New order created!"){
-        console.log("New Order created")
-        this.router.navigate(['/orders']);
-      }else{
-        console.log("New order NOT created!")
-      }
-    })
-  }
-
+ onEdit(orders: Orders) : any {
+  this.router.navigate(['/update-status', orders._id]);
+}
 }

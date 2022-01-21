@@ -15,6 +15,7 @@ import { EditProductComponent } from './pages/edit-product/edit-product.componen
 import { NewProductComponent } from './pages/new-product/new-product.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { EditStatusComponent } from './pages/edit-status/edit-status.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { RegisterComponent } from './pages/register/register.component';
     NewProductComponent,
     OrdersComponent,
     RegisterComponent,
+    EditStatusComponent,
   ],
   imports: [
     BrowserModule,

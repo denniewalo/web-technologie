@@ -1,0 +1,14 @@
+
+<div class="container-sm" style="margin-top: 40px">
+    <form [formGroup]="orderForm" (ngSubmit)="onFormSubmit()">
+      
+      
+      <div class="mb-3">
+        <label for="status" class="form-label">Order status</label>
+        <input formControlName="status" type="text" class="form-control" id="status">
+      </div>
+      <div class="mb-3">
+      </div>
+      <button type="submit" class="btn btn-dark">Update</button>
+    </form>
+  </div>

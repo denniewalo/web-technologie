@@ -24,3 +24,9 @@ Frontend für das Verwalten von Produkten (erstellen, löschen, bearbeiten)
 2. Führe **npm install** aus, um alle Abhängigkeiten zu installieren.
 3. Starte das Frontend mit **ng serve**
 4. Das Frontend ist im Browser unter der URL **http://localhost:4200**.
+
+## JWT login
+1. Navigiere zu **/backend/api/jwt**
+2. Führe **npm install** aus, um alle Abhängigkeiten zu installieren.
+3. Starte jwt mit **npm run login**
+
