@@ -6,4 +6,7 @@
       <div id="rightbox"><button mat-button (click)="removeProduct(item)">remove</button></div>
     </mat-list-item>
 </mat-list>
-<h1>Total Price: </h1>
+
+<h1>Total Price: {{getCartPrice()}} </h1>
+<!-- <button (click)="buy()">buy</button> -->
+<button>buy</button>

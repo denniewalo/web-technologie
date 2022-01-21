@@ -9,7 +9,9 @@ import {Product} from "../../interfaces/Product";
 })
 export class CartComponent implements OnInit {
   cart : Product[] = []
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService,
+              //private orderService: OrderService
+              ) { }
 
   ngOnInit(): void {
     this.cart = this.cartService.getCart();
@@ -19,4 +21,16 @@ export class CartComponent implements OnInit {
     this.cartService.removeProduct(product);
     this.cart = this.cartService.getCart();
   }
+
+  getCartPrice(): String{
+    return this.cartService.getCartPrice()
+  }
+
+  /**
+   * buy(){
+   * //if not logged in -> route login
+   * //else
+   * this.orderService.createOrder()
+   * }
+   */
 }

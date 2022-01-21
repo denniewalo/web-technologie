@@ -32,6 +32,21 @@ export class CartService {
     }
   }
 
+  getCartPrice(){
+    // @ts-ignore
+    let cart : Product[]= JSON.parse(localStorage.getItem('cart'));
+    let sum: number = 0;
+    console.log("init is" + sum);
+
+    for( var product of cart){
+      console.log(product.price);
+
+      sum += Number(product.price);
+    }
+    console.log("sum is" + sum);
+    return sum.toString();
+  }
+
   clearCart() {
     localStorage.removeItem('cart');
   }
@@ -47,5 +62,9 @@ export class CartService {
     cart.splice(deleteIndex, 1);
     const data = JSON.stringify(cart);
     localStorage.setItem('cart', data);
+  }
+
+  buy(){
+    
   }
 }
