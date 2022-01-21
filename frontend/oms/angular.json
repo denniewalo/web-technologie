@@ -67,6 +67,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+			      "browserTarget": "oms:build",
+            "port": 4700
+          },
           "configurations": {
             "production": {
               "browserTarget": "oms:build:production"
@@ -75,12 +79,12 @@
               "browserTarget": "oms:build:development"
             }
           },
-          "defaultConfiguration": "development",
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "oms:build",
+            "browserTarget": "oms:build"
           }
         },
         "test": {

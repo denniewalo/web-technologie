@@ -1,9 +1,13 @@
-
-<div class="form">
-    <h1>Login</h1>
-    <form class="login-form" action="">
-        <input type="text" placeholder="email adress">
-        <input type="password" placeholder="password">
-        <button>login</button>
-    </form>
+<div class="container-sm" style="margin-top: 40px">
+  <form [formGroup]="userloginForm" (ngSubmit)="onFormSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Username</label>
+      <input formControlName="username" type="text" class="form-control" id="username">
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Password</label>
+      <input formControlName="password" type="password" class="form-control" id="password">
+    </div>
+    <button type="submit" class="btn btn-dark">Login</button>
+  </form>
 </div>

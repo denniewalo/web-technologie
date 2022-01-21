@@ -6,12 +6,14 @@ import { ProductComponent } from './components/product/product.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   {path: 'products', component: ProductsComponent},
   {path: 'product', component: ProductComponent},
   {path: 'orders', component: OrdersComponent},
   {path: 'cart', component: CartComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent}
 ];
 

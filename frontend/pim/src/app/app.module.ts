@@ -22,12 +22,12 @@ import { EditStatusComponent } from './pages/edit-status/edit-status.component';
     AppComponent,
     HeaderComponent,
     ProductsComponent,
-    LoginComponent,
     ProductComponent,
     EditProductComponent,
     NewProductComponent,
     OrdersComponent,
     RegisterComponent,
+    LoginComponent,
     EditStatusComponent,
   ],
   imports: [

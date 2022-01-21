@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { User } from '../../interfaces/User'
 import { Observable } from "rxjs"
-import { CookieService } from 'ngx-cookie'
+import { User } from 'src/app/interfaces/User'
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +38,8 @@ export class UserService {
 
   logoutUser(id: string): Observable<{ message: string, status: string }>{
     const UserID = {
-      "id": id
+      "id": id,
+      "role": this.getGroup()
     }
     return this.http.post<{ message: string, status: string }>(this.baseURL + this.logoutURL, UserID)
   }
@@ -50,13 +50,12 @@ export class UserService {
 
   refreshToken(userid: string): Observable<{ token: string }> {
     const Userid = {
-      "userid": userid,
-      "role": this.getGroup()
+      "userid": userid
     }
     return this.http.post<{ token: string }>(this.baseURL + this.refreshURL, Userid)
   }
 
   getGroup() {
-    return "admin-group"
+    return "user-group"
   }
 }
