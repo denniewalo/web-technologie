@@ -11,6 +11,7 @@ const app          = express();
 const cors         = require('cors');
 const fileUpload   = require('express-fileupload');
 
+
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({

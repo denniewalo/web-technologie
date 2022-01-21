@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { ProductService } from "../../services/product.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { WebSocketServiceService } from 'src/app/services/WebSocketService/web-socket-service.service';
 
 @Component({
   selector: 'app-new-product',
@@ -22,6 +23,7 @@ export class NewProductComponent implements OnInit {
 
   constructor(private router: Router,
               private productService: ProductService,
+              private websocketServiceService: WebSocketServiceService,
               private toastr: ToastrService) {
 
   };
@@ -36,6 +38,7 @@ export class NewProductComponent implements OnInit {
     this.productService.createProduct(this.productForm.get("id").value, this.productForm.get("name").value, this.productForm.get("price").value, this.productForm.get("fileSource").value)
       .subscribe((res) => {
       if (res.message == "New product created!"){
+        this.websocketServiceService.socket.emit("createProdukt");
         this.showToastr(true);
         this.router.navigate(['/products']);
       }else{
