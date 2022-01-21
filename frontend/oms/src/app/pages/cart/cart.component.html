@@ -1,19 +1,12 @@
-<mat-list>
+<h1> My Cart</h1>
+<mat-list *ngFor="let item of cart">
     <mat-list-item>
-        <div id="leftbox"><p>name</p></div>
-        <div id="middlebox"><p>price</p></div>
-        <div id="rightbox"><button mat-button>remove</button></div>
-     </mat-list-item>
-    
-    <mat-list-item>
-        <div id="leftbox"><p>name</p></div>
-        <div id="middlebox"><p>price</p></div>
-        <div id="rightbox"><button mat-button>remove</button></div>
+      <div id="leftbox"><p>{{item.name}}</p></div>
+      <div id="middlebox"><p>{{item.price}}</p></div>
+      <div id="rightbox"><button mat-button (click)="removeProduct(item)">remove</button></div>
     </mat-list-item>
-    <mat-list-item>
-        <div id="leftbox"><p>name</p></div>
-        <div id="middlebox"><p>price</p></div>
-        <div id="rightbox"><button mat-button>remove</button></div>
-    </mat-list-item>
-   </mat-list>
-   
+</mat-list>
+
+<h1>Total Price: {{getCartPrice()}} </h1>
+<!-- <button (click)="buy()">buy</button> -->
+<button>buy</button>
