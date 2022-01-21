@@ -1,5 +1,5 @@
 const jwt   = require('jsonwebtoken')
-auth          = require('../../auth/auth')
+auth          = require('../../auth/token-generator')
 uuid          = require('uuid')
 bcrypt        = require('bcrypt')
 User          = require('../model/user.model')
@@ -13,7 +13,9 @@ const token     = { username: "", password: "" }
 
 
 exports.register = async function (req, res) {
-    
+
+    console.log("Registrierverfahren gestartet...")
+
     let userexist = undefined
     if(req.body.role == "admin-group") {
         userexist = await findAdminWithName(req.body.username)
@@ -30,19 +32,25 @@ exports.register = async function (req, res) {
     if(!hashedPw)   return res.send("Es konnte kein Passwort verschlüsselt werden. <Register>")
 
     // erstelle User
-    let user = undefined
+    let user    = undefined
+    let admin   = undefined
     if(req.body.role == "admin-group") {
-        user      = new Admin()
+        admin   = new Admin()
+        admin.id         = uuid.v4()
+        admin.fullname   = req.body.fullname
+        admin.username   = req.body.username
+        admin.password   = hashedPw
+        admin.saltid     = salt.saltId
+        admin.role       = req.body.role
     } else if (req.body.role == "user-group")  {
-        user      = new User()
+        user            = new User()
+        user.id         = uuid.v4()
+        user.fullname   = req.body.fullname
+        user.username   = req.body.username
+        user.password   = hashedPw
+        user.saltid     = salt.saltId
+        user.role       = req.body.role
     }
-    
-    user.id             = uuid.v4()
-    user.fullname       = req.body.fullname
-    user.username       = req.body.username
-    user.password       = hashedPw
-    user.saltid         = salt.saltId
-    user.role           = req.body.role
 
     // erstelle token für das generieren einen AccessTokens
     token.username      = req.body.username
@@ -70,7 +78,9 @@ exports.register = async function (req, res) {
 
 
 exports.login = async function (req, res) {
-    
+
+    console.log("Loginverfahren gestartet...")
+
     if(req.body.role != "admin-group" && req.body.role != "user-group") return res.sendStatus(401)
 
     let user = undefined
@@ -113,14 +123,20 @@ exports.login = async function (req, res) {
 
 
 exports.logout = function (req, res) {
+    console.log("Benutzer wird ausgeloggt!")
     deleteRefreshTokenByUserId(req.body.id)
     res.json({ status: 'logout' })
 }
 
 
 exports.refreshToken = async function(req, res) {
-
-    const user = await findUserWithId(req.body.userid)
+    console.log("Verfahren zum erstellen eines neuen AccessToken gestartet...")
+    let user
+    if(req.body.role == "admin-group") {
+        user = await findAdminWithId(req.body.userid)
+    } else if (req.body.role == "user-group")  {
+        user = await findUserWithId(req.body.userid)
+    }
     if(!user) return res.sendStatus(401)
 
     const refreshToken = await findRefreshToken(user.id)
@@ -208,6 +224,16 @@ async function findUserWithId(userid) {
         })
     })
     return user[0]
+}
+
+async function findAdminWithId(userid) {
+    const admin = await new Promise((resolve, reject) => {
+        Admin.find({id: userid}, async function (err, admin) {
+            if (err) return console.log(err)
+            resolve(admin)
+        })
+    })
+    return admin[0]
 }
 
 async function findSaltById(saltid) {

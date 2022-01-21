@@ -38,7 +38,8 @@ export class UserService {
 
   logoutUser(id: string): Observable<{ message: string, status: string }>{
     const UserID = {
-      "id": id
+      "id": id,
+      "role": this.getGroup()
     }
     return this.http.post<{ message: string, status: string }>(this.baseURL + this.logoutURL, UserID)
   }

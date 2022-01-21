@@ -50,7 +50,8 @@ export class UserService {
 
   refreshToken(userid: string): Observable<{ token: string }> {
     const Userid = {
-      "userid": userid
+      "userid": userid,
+      "role": this.getGroup()
     }
     return this.http.post<{ token: string }>(this.baseURL + this.refreshURL, Userid)
   }
