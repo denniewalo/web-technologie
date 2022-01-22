@@ -16,6 +16,7 @@ import { NewProductComponent } from './pages/new-product/new-product.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { EditStatusComponent } from './pages/edit-status/edit-status.component';
+import { ReportingComponent } from './pages/reporting/reporting.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { EditStatusComponent } from './pages/edit-status/edit-status.component';
     RegisterComponent,
     LoginComponent,
     EditStatusComponent,
+    ReportingComponent,
   ],
   imports: [
     BrowserModule,

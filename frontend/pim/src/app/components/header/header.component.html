@@ -16,6 +16,9 @@
           <a class="nav-link" (click)="isLoggedIn('orders')">Orders</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" (click)="isLoggedIn('reporting')">Reporting</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" routerLink="/login" *ngIf="!loggedIn">Login</a>
         </li>
         <li class="nav-item">
@@ -24,10 +27,6 @@
       </ul>
     </div>
     <button class="btn btn-dark logout" (click)="logout()" *ngIf="!loggedOut">Logout</button>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
   </div>
 </nav>
 

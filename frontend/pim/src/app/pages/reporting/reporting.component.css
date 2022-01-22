@@ -1,0 +1,21 @@
+.reportingContainer {
+}
+.btn {
+  background: purple;
+  margin-right: 1rem;
+  color: white;
+}
+
+.bigIcon {
+  color: purple;
+  font-size: 40px;
+  display: flex;
+}
+.bigIcon:hover {
+  cursor: pointer
+}
+
+.inputContainer {
+  display: flex;
+  justify-content: space-between;
+}
