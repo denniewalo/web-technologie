@@ -22,7 +22,7 @@ exports.new = async function (req, res) {
   const product = new Product();
   product.id = req.body.id;
   product.name = req.body.name;
-  product.price = req.body.price + "€";
+  product.price = req.body.price;
   product.imageURL = req.body.imageURL;
   // save image
   try {
@@ -79,7 +79,7 @@ exports.update = function (req, res) {
     } else {
       product.id = req.body.id;
       product.name = req.body.name;
-      product.price = req.body.price + "€";
+      product.price = req.body.price;
       product.imageURL = req.body.imageURL;
 // save the product and check for errors
       await product.save(function (err) {

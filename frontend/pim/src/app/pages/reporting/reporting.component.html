@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Get all Orders as CSV</h5>
+        <p class="card-text">Generate all orders as CSV file</p>
+        <i class="bi bi-arrow-right-square-fill bigIcon" (click)="allOrders()"></i>
+        <a id="b1" download="allOrders.json" display="none"></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Get all Orders by customerId</h5>
+        <p class="card-text">Generate all orders for a given customerId</p>
+        <div class="inputContainer">
+          <input type="text" id="customerId" name="customerId" [formControl]="customerId" class="card-text">
+          <i class="bi bi-arrow-right-square-fill bigIcon" (click)="orderByCustomerId()"></i>
+        </div>
+        <a id="b2" download="customerId.json" display="none"></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Get all Orders in state</h5>
+        <p class="card-text">Generate all orders for a given order status</p>
+        <div class="inputContainer">
+          <input type="text" id="orderStatus" name="orderStatus" [formControl]="orderStatus" class="card-text">
+          <i class="bi bi-arrow-right-square-fill bigIcon" (click)="orderByStatus()"></i>
+        </div>
+        <a id="b3" download="orderStatus.json" display="none"></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Get all Orders before Date</h5>
+        <p class="card-text">Get all Orders after a given Date </p>
+        <div class="inputContainer">
+        <input type="date" id="beforeTime" name="beforeTime" [formControl]="beforeTime" class="card-text">
+        <i class="bi bi-arrow-right-square-fill bigIcon" (click)="orderBeforeTime()"></i></div>
+      </div>
+      <a id="b4" download="ordersCreatedAfter.json" display="none"></a>
+    </div>
+  </div>
+</div>

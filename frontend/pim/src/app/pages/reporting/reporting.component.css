@@ -1,0 +1,14 @@
+.btn {
+  background: purple;
+  margin-right: 1rem;
+}
+
+.bigIcon {
+  color: purple;
+  font-size: 40px;
+  display: flex;
+}
+.inputContainer {
+  display: flex;
+  justify-content: space-between;
+}
