@@ -10,6 +10,7 @@ router.get('/', function (req, res) {
 // Import product controller
 const productController = require('./controller/productController');
 const orderController = require('./controller/orderController');
+const orderIdController = require('./controller/orderIdController');
 
 // Product routes
 router.route('/products')
@@ -33,7 +34,8 @@ router.route('/orders/update-status')
 router.route('/orders/getByID/:order_Id')
   .get(orderController.view)
 
-  
+router.route('/orders/getByCustomerID/:customerId')
+  .get(orderIdController.view);
 
 
 

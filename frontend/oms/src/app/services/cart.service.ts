@@ -32,18 +32,21 @@ export class CartService {
     }
   }
 
+  
   getCartPrice(){
     // @ts-ignore
     let cart : Product[]= JSON.parse(localStorage.getItem('cart'));
     let sum: number = 0;
-    console.log("init is" + sum);
 
-    for( var product of cart){
-      console.log(product.price);
-
-      sum += Number(product.price);
+    if(cart == null){
+      sum = 0;
     }
-    console.log("sum is" + sum);
+    else{
+      for( let i = 0; i < cart.length; i++){
+        sum += Number(cart[i].price);
+      }
+    }
+
     return sum.toString();
   }
 

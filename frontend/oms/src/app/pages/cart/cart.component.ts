@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {CartService} from "../../services/cart.service";
 import {Product} from "../../interfaces/Product";
 import { Router } from '@angular/router';
-//import { AuthService } from 'src/app/services/authService/auth.service';
+import { OrderService } from 'src/app/services/orderService/order.service';
+import { AuthService } from 'src/app/services/authService/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,8 +14,8 @@ export class CartComponent implements OnInit {
   cart : Product[] = []
   constructor(private cartService: CartService,
               private router: Router,
-              //private orderService: OrderService,
-              //private authService: AuthService
+              private orderService: OrderService,
+              private authService: AuthService
               ) { }
 
   ngOnInit(): void {
@@ -31,22 +32,25 @@ export class CartComponent implements OnInit {
   }
 
   buy(){
-    this.router.navigate(['/login']);
-    }
-   
-
-/**
- *
-     buy(){
     //check is user is logged in
-    if(!this.authService.isLoggedIn()){
+    if(!this.authService.isLoggedIn){
      this.router.navigate(['/login']);
    }
 
    else{
-     this.orderService.createOrder(this.authService.getUserId(), this.cartService.getCart(), this.cartService.getCartPrice(),"In progess");
+     console.log("in else")
+     // @ts-ignore
+     this.orderService.createOrder(this.authService.getUserId(), this.cartService.getCart(), this.cartService.getCartPrice(),"In progess").subscribe((res) => {
+      console.log("hallo",res);
+     })
+     
+     console.log(this.authService.getUserId());
+     console.log(this.cartService.getCart());
+     console.log(this.cartService.getCartPrice());
+ 
+    // window.location.reload();
       this.cartService.clearCart();
     }
   }
- */
+   
 }
