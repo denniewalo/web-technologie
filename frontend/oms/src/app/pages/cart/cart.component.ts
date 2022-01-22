@@ -47,9 +47,8 @@ export class CartComponent implements OnInit {
      console.log(this.authService.getUserId());
      console.log(this.cartService.getCart());
      console.log(this.cartService.getCartPrice());
- 
-    // window.location.reload();
-      this.cartService.clearCart();
+     window.location.reload();
+     this.cartService.clearCart();
     }
   }
    
