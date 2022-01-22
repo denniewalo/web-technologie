@@ -15,6 +15,10 @@ export class ReportingComponent implements OnInit {
   beforeTime = new FormControl("");
   orders: Orders[] | undefined;
 
+  orderStatusList = ["In Bearbeitung", "Abgeschlossen"];
+  showDownloadButton = false;
+
+
   constructor(private reportingService: ReportingService) { }
 
   ngOnInit(): void {
@@ -23,12 +27,14 @@ export class ReportingComponent implements OnInit {
   allOrders() {
     this.reportingService.getOrders().subscribe((data) => {
       this.orders = data.data.Orders;
+      this.convertToCSV(data.data.Orders);
       const blob = new Blob([JSON.stringify(this.orders, null, 2)], {type: 'application/json'});
-      const downloadbutton = document.getElementById("b1");
+      const downloadbutton = document.getElementById("downloadDataButton");
         // @ts-ignore
       downloadbutton.href = URL.createObjectURL(blob);
       // @ts-ignore
-      downloadbutton.click();
+      //downloadbutton.click();
+      this.showDownloadButton = true;
 
     })
   }
@@ -37,11 +43,12 @@ export class ReportingComponent implements OnInit {
     this.reportingService.getOrderByCustomerId(this.customerId.value).subscribe((data) => {
       this.orders = data.data.OrdersCustomerId;
       const blob = new Blob([JSON.stringify(this.orders, null, 2)], {type: 'application/json'});
-      const downloadbutton = document.getElementById("b2");
+      const downloadbutton = document.getElementById("downloadDataButton");
       // @ts-ignore
       downloadbutton.href = URL.createObjectURL(blob);
       // @ts-ignore
-      downloadbutton.click();
+      //downloadbutton.click();
+      this.showDownloadButton = true;
     });
   }
   orderByStatus() {
@@ -49,11 +56,12 @@ export class ReportingComponent implements OnInit {
     this.reportingService.getOrdersByStatus(this.orderStatus.value).subscribe((data) => {
       this.orders = data.data.OrdersByStatus;
       const blob = new Blob([JSON.stringify(this.orders, null, 2)], {type: 'application/json'});
-      const downloadbutton = document.getElementById("b3");
+      const downloadbutton = document.getElementById("downloadDataButton");
       // @ts-ignore
       downloadbutton.href = URL.createObjectURL(blob);
       // @ts-ignore
-      downloadbutton.click();
+      //downloadbutton.click();
+      this.showDownloadButton = true;
     });
   }
   orderBeforeTime() {
@@ -61,11 +69,25 @@ export class ReportingComponent implements OnInit {
     this.reportingService.getOrdersBeforeDate(unixTime).subscribe((data) => {
       this.orders = data.data.OrdersCreatedAfter;
       const blob = new Blob([JSON.stringify(this.orders, null, 2)], {type: 'application/json'});
-      const downloadbutton = document.getElementById("b4");
+      const downloadbutton = document.getElementById("downloadDataButton");
       // @ts-ignore
       downloadbutton.href = URL.createObjectURL(blob);
       // @ts-ignore
-      downloadbutton.click();
+      //downloadbutton.click();
+      this.showDownloadButton = true;
     })
+  }
+
+  convertToCSV(jsonData: Array<any>){
+    const fields = Object.keys(jsonData[0])
+    let csv = jsonData.map(function(row: any){
+      return fields.map(function(fieldName){
+        return JSON.stringify(row[fieldName], row[fieldName])
+      }).join(',')
+    })
+    csv.unshift(fields.join(',')) // add header column
+    const result = csv.join('\r\n');
+    return result;
+
   }
 }
