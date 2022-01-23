@@ -1,4 +1,37 @@
-<h1> My Cart</h1>
+<h1 >My Cart</h1>
+<mat-grid-list cols=3>
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile>
+<table class="table table-hover">
+  <thead class="thead">
+
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col" >Price</th>
+      <th scope="col"id="align-right"></th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let item of cart">
+    <tr>
+      <td>{{item.name}}</td>
+      <td >{{item.price}}€</td>
+      <td id="align-right"><button id="remove-button" (click)="removeProduct(item)">remove</button></td>
+    </tr>
+    </tbody>
+    <tfoot>
+      <tr><td colspan="3" id="align-right"><h2 >Total Price: {{getCartPrice()}}€</h2></td></tr>
+        <tr><td colspan="3" style="background-color: rgb(231, 231, 231);" *ngIf="(getCartPrice() != '0')"><button mat-button (click)="buy()" id="buy-btn">buy</button></td></tr>
+    </tfoot>
+</table>
+
+</mat-grid-tile>
+
+<!--
+  
+<mat-grid-tile></mat-grid-tile>
+</mat-grid-list>
+<br><br><br><br>
+<br><br><br>
 <mat-list *ngFor="let item of cart">
     <mat-list-item class="item">
       <div id="leftbox"><p>{{item.name}}</p></div>
@@ -11,3 +44,4 @@
 <div id="middlebox"><h2>Total Price: {{getCartPrice()}}€</h2></div>
 <div id="rightbox"><button mat-button (click)="buy()" id="buy-btn">buy</button></div>
 
+-->

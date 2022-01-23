@@ -60,11 +60,19 @@ export class CartService {
     let cart : Product[]= JSON.parse(this.lokalstorageService.getCart());
     let tempCart: Product[] = [];
     let isRemoved: boolean = false;
-    const deleteIndex = cart.findIndex(item => {
+    /**
+     * const deleteIndex = cart.findIndex(item => {
       console.log(product.id)
       item.id == product.id
     })
-    console.log(deleteIndex);
+     */
+    let deleteIndex = 0;
+    for(let i = 0; i < cart.length; i++){
+      if(cart[i].id == product.id){
+        deleteIndex = i;
+      }
+    }
+    console.log("deleteIndex:", deleteIndex);
     cart.splice(deleteIndex, 1);
     const data = JSON.stringify(cart);
     this.lokalstorageService.setCart(data);

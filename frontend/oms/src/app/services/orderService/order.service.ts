@@ -12,7 +12,8 @@ export class OrderService {
   private ordersURL: string = "http://localhost:4000/api/orders"
   private ordersUpdateURL: string = "http://localhost:4000/api/orders/update-status"
   private getByIDURL: string = "http://localhost:4000/api/orders/getByID"
-  private getByCustomerIDURL: string = "http://localhost:4000/api/orders/getByCustomerID/:customerId"
+
+  private getByCustomerIDURL: string = "http://localhost:4000/api/orders/getByCustomerID"
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -50,8 +51,9 @@ export class OrderService {
     return this.http.get<{message: string, data: Orders}>(this.getByIDURL + "/" + order_Id, { headers: this.authService.genHeader()});
   }
 
-  getOrderByCustomerId(customerId: string | undefined): Observable<{ message: string; data: Orders }> {
-    return this.http.get<{message: string, data: Orders}>(this.getByCustomerIDURL + "/" + customerId, { headers: this.authService.genHeader()});
+  getOrderByCustomerId(customerId: string | undefined): Observable<{ message: string; data: Orders[] }> {
+    return this.http.get<{message: string, data: Orders[]}>(this.getByCustomerIDURL + "/" + customerId, { headers: this.authService.genHeader()});
+
   }
 
   
