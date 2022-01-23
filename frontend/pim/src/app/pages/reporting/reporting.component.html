@@ -1,0 +1,79 @@
+<div class="reportingContainer m-4">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Get all Orders</h5>
+          <p class="card-text">Generate all orders as JSON</p>
+          <i class="bi bi-arrow-right-square-fill bigIcon" (click)="allOrders()"></i>
+          <!--<a id="b1" download="allOrders.json" display="none"></a>-->
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Get all Orders by customerId</h5>
+          <p class="card-text">Generate all orders for a given customerId as JSON</p>
+          <div class="inputContainer">
+            <input type="text" id="customerId" name="customerId" [formControl]="customerId" class="card-text">
+            <i class="bi bi-arrow-right-square-fill bigIcon" (click)="orderByCustomerId()"></i>
+          </div>
+          <a id="b2" download="customerId.json" display="none"></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Get all Orders in state</h5>
+          <p class="card-text">Generate all orders for a given order status as JSON</p>
+          <div class="inputContainer">
+            <div class="col-md-6">
+              <select class="form-select" [formControl]="orderStatus">
+              <option *ngFor="let status of orderStatusList" [value]="status">{{status}}</option>
+            </select></div>
+            <!--<input type="text" id="orderStatus" name="orderStatus" [formControl]="orderStatus" class="card-text">-->
+            <i class="bi bi-arrow-right-square-fill bigIcon" (click)="orderByStatus()"></i>
+          </div>
+          <a id="b3" download="orderStatus.json" display="none"></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Get all Orders after date</h5>
+          <p class="card-text">Get all Orders after a given Date as JSON</p>
+          <div class="inputContainer">
+          <input type="date" id="beforeTime" name="beforeTime" [formControl]="beforeTime" class="card-text">
+          <i class="bi bi-arrow-right-square-fill bigIcon" (click)="orderBeforeTime()"></i></div>
+        </div>
+        <a id="b5" download="ordersCreatedAfter.json" display="none"></a>
+      </div>
+    </div>
+  </div>
+  <div class="dataContainer mt-4">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Order Id</th>
+        <th scope="col">Customer Id</th>
+        <th scope="col">Price</th>
+        <th scope="col">Status</th>
+        <th scope="col">Anzahl Produkte</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let order of orders">
+        <th scope="row">{{order.ordersId}}</th>
+        <td>{{order.customerId}}</td>
+        <td>{{order.price}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.products.length}}</td>
+      </tr>
+      </tbody>
+    </table>
+   <a [hidden]="!showDownloadButton" class="btn" id="downloadDataButton" download="ordersCreatedAfter.json">Download Data</a>
+  </div>
+</div>

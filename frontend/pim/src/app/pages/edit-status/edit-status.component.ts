@@ -41,10 +41,11 @@ export class EditStatusComponent implements OnInit {
         "customerId": res.data.customerId,
         "products": res.data.products,
         "price": res.data.price,
-        "status": res.data.status,
-      
+        "status": "Abgeschlossen",
+
       });
     })
+    this.orderForm.get('status').disable();
     console.log("Stufe 3")
   }
 
@@ -55,7 +56,7 @@ export class EditStatusComponent implements OnInit {
           this.router.navigate(['/orders']);
           this.isEdited = true;
         } else {
-    
+
         }
       });
     }
