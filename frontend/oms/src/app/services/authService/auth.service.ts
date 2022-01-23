@@ -1,7 +1,9 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core'
-import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode'
 import { BehaviorSubject } from 'rxjs'
 import { DecodedToken } from 'src/app/interfaces/DecodedToken'
+import { LokalstorageService } from '../localstorageService/lokalstorage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +12,12 @@ export class AuthService {
 
   private token$ = new BehaviorSubject<DecodedToken | null>(null);
 
-  get encodedToken(): string | null {
-    return localStorage.getItem('TOKEN_KEY')
-  }
-
-  get token(): string | null {
-    return localStorage.getItem('TOKEN_KEY')
-  }
-
-  constructor() {
+  constructor(private http: HttpClient, private localStorageService: LokalstorageService) {
     if (this.encodedToken) this.login(this.encodedToken)
+  }
+
+  get encodedToken(): string | null {
+    return this.localStorageService.getToken()
   }
 
   get isExpired(): boolean {
@@ -34,33 +32,22 @@ export class AuthService {
   }
 
   login(token: string): boolean {
-    localStorage.setItem('TOKEN_KEY', token)
+    this.localStorageService.setToken(token)
     const decoded = jwtDecode<DecodedToken>(token)
     this.token$.next(decoded)
     return true
   }
 
   logout(): void {
-    localStorage.removeItem('TOKEN_KEY')
-    this.deleteUserId()
+    this.localStorageService.deleteUserId()
+    this.localStorageService.deleteUsername()
+    this.localStorageService.deleteRole()
+    this.localStorageService.deleteToken()
     this.token$.next(null)
   }
 
-  setToken(token: string) {
-    localStorage.setItem('TOKEN_KEY', token)
-    const decoded = jwtDecode<DecodedToken>(token)
-    this.token$.next(decoded)
-  }
-
-  setUserId(userid: string) {
-    localStorage.setItem('userid', userid)
-  }
-
-  getUserId() {
-    return localStorage.getItem("userid")
-  }
-
-  deleteUserId() {
-    localStorage.removeItem('userid')
+  genHeader() {
+    const headers = new HttpHeaders().set('Authorization','Bearer ' + this.localStorageService.getToken())
+    return headers
   }
 }

@@ -4,6 +4,7 @@ import {Product} from "../../interfaces/Product";
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/services/orderService/order.service';
 import { AuthService } from 'src/app/services/authService/auth.service';
+import { LokalstorageService } from 'src/app/services/localstorageService/lokalstorage.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,10 +13,12 @@ import { AuthService } from 'src/app/services/authService/auth.service';
 })
 export class CartComponent implements OnInit {
   cart : Product[] = []
+
   constructor(private cartService: CartService,
               private router: Router,
               private orderService: OrderService,
-              private authService: AuthService
+              private authService: AuthService,
+              private lokalstorageService: LokalstorageService
               ) { }
 
   ngOnInit(): void {
@@ -40,11 +43,11 @@ export class CartComponent implements OnInit {
    else{
      console.log("in else")
      // @ts-ignore
-     this.orderService.createOrder(this.authService.getUserId(), this.cartService.getCart(), this.cartService.getCartPrice(),"In progess").subscribe((res) => {
+     this.orderService.createOrder(this.lokalstorageService.getUserId(), this.cartService.getCart(), this.cartService.getCartPrice(),"In progess").subscribe((res) => {
       console.log("hallo",res);
      })
      
-     console.log(this.authService.getUserId());
+     console.log(this.lokalstorageService.getUserId());
      console.log(this.cartService.getCart());
      console.log(this.cartService.getCartPrice());
      window.location.reload();

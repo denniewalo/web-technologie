@@ -1,41 +1,42 @@
 import { Injectable } from '@angular/core';
 import {Product} from "../interfaces/Product";
+import { LokalstorageService } from './localstorageService/lokalstorage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  constructor() { }
+  constructor(private lokalstorageService: LokalstorageService) { }
 
   getCart(){
-    if(localStorage.getItem('cart')!= null){
+    if(this.lokalstorageService.getCart()!= null){
       // @ts-ignore
-      return JSON.parse(localStorage.getItem('cart'));
+      return JSON.parse(this.lokalstorageService.getCart());
     }
     return [];
   }
 
   addToCart(product: Product) {
-    if(localStorage.getItem('cart') != null){
+    if(this.lokalstorageService.getCart() != null){
       // @ts-ignore
-      let cart = JSON.parse(localStorage.getItem('cart'));
+      let cart = JSON.parse(this.lokalstorageService.getCart());
       // @ts-ignore
       cart.push(product);
       const data = JSON.stringify(cart);
-      localStorage.setItem('cart', data);
+      this.lokalstorageService.setCart(data);
     }else {
       let cart : Product[] = []
       cart.push(product);
       const data = JSON.stringify(cart);
-      localStorage.setItem('cart', data);
+      this.lokalstorageService.setCart(data);
     }
   }
 
   
   getCartPrice(){
     // @ts-ignore
-    let cart : Product[]= JSON.parse(localStorage.getItem('cart'));
+    let cart : Product[]= JSON.parse(this.lokalstorageService.getCart());
     let sum: number = 0;
 
     if(cart == null){
@@ -51,12 +52,12 @@ export class CartService {
   }
 
   clearCart() {
-    localStorage.removeItem('cart');
+    this.lokalstorageService.deleteCart();
   }
 
   removeProduct(product: Product) {
     // @ts-ignore
-    let cart : Product[]= JSON.parse(localStorage.getItem('cart'));
+    let cart : Product[]= JSON.parse(this.lokalstorageService.getCart());
     let tempCart: Product[] = [];
     let isRemoved: boolean = false;
     const deleteIndex = cart.findIndex(item => {
@@ -66,7 +67,7 @@ export class CartService {
     console.log(deleteIndex);
     cart.splice(deleteIndex, 1);
     const data = JSON.stringify(cart);
-    localStorage.setItem('cart', data);
+    this.lokalstorageService.setCart(data);
   }
 
   buy(){

@@ -3,7 +3,7 @@ const jwt   = require('jsonwebtoken')
 const generateAccessToken = (user) => {
     return jwt.sign(
         { username: user.username, userpw: user.password }, 
-        process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+        process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
 }
 
 const generateRefreshToken = (user) => {

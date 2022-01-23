@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from '../interfaces/Product';
-import {Observable} from "rxjs";
+import {iif, Observable} from "rxjs";
+import { AuthService } from './authService/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import {Observable} from "rxjs";
 export class ProductService {
   private productURL: string = "http://localhost:4000/api/products"
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getProduct(): Observable<{data: Product[], message: string, status: string}> {
     return this.http.get<{data: Product[], message: string, status: string}>(this.productURL)
@@ -26,11 +27,11 @@ export class ProductService {
     formData.append("price", productPrice);
     formData.append("imageURL", file.name);
     formData.append("productImage", file);
-    return this.http.post<any>(this.productURL, formData);
+    return this.http.post<any>(this.productURL, formData, { headers: this.authService.genHeader()});
   }
 
   getProductById(productId: string | undefined): Observable<{ message: string; data: Product }> {
-    return this.http.get<{message: string, data: Product}>(this.productURL + "/" + productId);
+    return this.http.get<{message: string, data: Product}>(this.productURL + "/" + productId, { headers: this.authService.genHeader()});
   }
 
   updateProduct(product_id: string, productId: string, productName: string, productPrice: string, productImageURL: string): Observable<{message: string, data: Product}>{
@@ -40,7 +41,7 @@ export class ProductService {
       "price": productPrice,
       "imageURL": productImageURL
     }
-    return this.http.patch<{message: string, data: Product}>(this.productURL + "/" + product_id, updateProduct);
+    return this.http.patch<{message: string, data: Product}>(this.productURL + "/" + product_id, updateProduct, { headers: this.authService.genHeader()});
   }
 
   updateProductWithNewImage(product_id: string, productId: string, productName: string, productPrice: string, file: any): Observable<{message: string, data: Product}>{
@@ -51,7 +52,7 @@ export class ProductService {
     formData.append("imageURL", file.name);
     formData.append("productImage", file);
 
-    return this.http.patch<any>(this.productURL + "/" + product_id, formData);
+    return this.http.patch<any>(this.productURL + "/" + product_id, formData, { headers: this.authService.genHeader()});
   }
 
 }

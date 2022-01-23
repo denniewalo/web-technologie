@@ -2,6 +2,7 @@ Product = require('./../model/productModel');
 
 // Handle index actions
 exports.index = function (req, res) {
+  console.log("Bin im PC index")
   Product.get(function (err, products) {
     if (err) {
       res.json({

@@ -34,28 +34,25 @@ app.listen(
     console.log(`Sever is running on http://localhost:${PORT}`)
 )
 
-
 async function authenticateToken(req, res, next) {
 
-    // get the header von der request 
     const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(" ")[1]
+    if(token === undefined) req.send("denied")
 
-    // split the header in zwei Teile wo der zweite Wert der Token ist
-    // mit 'authHeader &&' check ob ein header ist vorhanden 
-    const token = authHeader && authHeader.split(' ')[1]
-
-    // haben wir keinen Token gibt es einen 401 zurück
-    if(token == null) return req.sendStatus(401)
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-
-        // wenn wir einen error erhalten gibt es einen 403 zurück
-        if(err) return res.sendStatus(403)
-
-        // wir haben einen user, geben den in die request
-        req.user = user
-
-        // weiter gehen
-        next()
+    console.log("authen token: ", token)
+    
+  
+    const user = await new Promise((resolve, reject) => {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+          if(!user) return res.sendStatus(403)
+          if(err) return res.sendStatus(403)
+          console.log("User: " ,user ,"verified!")
+          resolve(user)
+      })
     })
-}
+  
+    req.user = user  
+    next() // weiterleiten zum api aufruf
+  
+  }

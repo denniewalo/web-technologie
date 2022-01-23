@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Orders } from '../../interfaces/Orders';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from "rxjs";
+import { AuthService } from '../authService/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class OrderService {
   private ordersURL: string = "http://localhost:4000/api/orders"
   private ordersUpdateURL: string = "http://localhost:4000/api/orders/update-status"
   private getByIDURL: string = "http://localhost:4000/api/orders/getByID"
-  constructor(private http: HttpClient) { }
+  
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   createOrder(ordersId: string, customerId: string, products: [], price: string,status: string): Observable<{message: string, data: Orders}>{
     const newOrder = {
@@ -24,7 +26,7 @@ export class OrderService {
   };
 
   getOrder(): Observable<{data: Orders[], message: string, status: string}> {
-    return this.http.get<{data: Orders[], message: string, status: string}>(this.ordersURL)
+    return this.http.get<{data: Orders[], message: string, status: string}>(this.ordersURL);
   };
 
   getOrderById(order_Id: string | undefined): Observable<{ message: string; data: Orders }> {
