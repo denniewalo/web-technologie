@@ -14,6 +14,10 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(){
     this.websocketServiceService.sendMessage();
+    this.websocketServiceService.socket.on('statusChangedToast',(data: any)=>{
+      console.log("bin vor StatusToast");
+      this.websocketServiceService.statusToast();
+    })
     this.websocketServiceService.socket.on('ProduktToast',(data: any)=>{
       this.websocketServiceService.productToast(true);
     })

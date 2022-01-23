@@ -15,6 +15,11 @@ export class WebSocketServiceService {
     this.socket.emit('message','Hello World');
   }
 
+  sendStatusChange(UserId: String){
+    console.log("Hier ist die User ID" + UserId);
+    this.socket.emit("StatusChange",UserId);
+  }
+
   productToast(isCreated: Boolean){
     console.log("Bin Im Toast");
     if(isCreated) {

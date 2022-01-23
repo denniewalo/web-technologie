@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {io} from 'socket.io-client';
 import { ToastrService } from "ngx-toastr";
+import { LokalstorageService } from '../localstorageService/lokalstorage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,15 @@ export class WebsocketService {
 
   sendMessage(){
     this.socket.emit('message','Hello World');
+  }
+
+  sendName(){
+    this.socket.emit('username',this.lokalStorage.getUserId());
+  }
+
+  statusToast(){
+    console.log("bin im status toast")
+    this.toastr.success("Status Changed","ABGESCHLOSSEN");
   }
 
   productToast(isCreated: Boolean){
@@ -24,7 +34,8 @@ export class WebsocketService {
 
  
 
-  constructor(private toastr: ToastrService) { 
+  constructor(private toastr: ToastrService,
+              private lokalStorage: LokalstorageService) { 
     this.socket = io('http://localhost:7000');
   }
 }

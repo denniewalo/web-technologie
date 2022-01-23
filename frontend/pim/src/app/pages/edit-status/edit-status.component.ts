@@ -4,6 +4,7 @@ import { ToastrService } from "ngx-toastr";
 
 import {FormControl, FormGroup} from "@angular/forms";
 import { OrderService } from '../../services/orders/order.service';
+import { WebSocketServiceService } from 'src/app/services/WebSocketService/web-socket-service.service';
 
 @Component({
   selector: 'app-edit-status',
@@ -19,6 +20,7 @@ export class EditStatusComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private orderService: OrderService,
+              private WebSocketService: WebSocketServiceService,
               private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -51,7 +53,10 @@ export class EditStatusComponent implements OnInit {
 
   onFormSubmit(): void {
     console.log("SUBMIT")
+    const userId = this.orderForm.get("customerId").value
       this.orderService.updateStatus(this.order_id, this.orderForm.get("status").value).subscribe((res) => {
+        console.log(userId + "das ist userID im PIM")
+        this.WebSocketService.sendStatusChange(userId);
         if (res.message == "Order Info updated"){
           this.router.navigate(['/orders']);
           this.isEdited = true;

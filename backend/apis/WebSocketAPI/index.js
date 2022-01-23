@@ -10,14 +10,29 @@ const io = socketio(server,{
     }
 });
 
-io.on('connection', socket =>{
+const users = new Map();
+
+io.on('connection', function (socket){
+    //users.push(socket.id);
     console.log('New Ws Connection');
     socket.emit('message','Wellcome');
+    socket.on('username',function (userId){
+            socket.nickname = userId;
+            users.set(socket.nickname,socket.id);
+            console.log(users);
+    //socket.broadcast.to(users.get(userId)).emit('statusChangedToast','statusChangedToast');
+    });
+    socket.on('StatusChange',(userId)=>{
+        console.log("status change angestossen" )
+        console.log("user ID:" + userId);
+        socket.broadcast.to(users.get(userId)).emit("statusChangedToast","statusChangedToast");
+    })
     socket.on('createProdukt',(msg)=>{
         console.log(msg);
         io.emit('ProduktToast','ProduktToast');
     });
    
+
 })
 
  
