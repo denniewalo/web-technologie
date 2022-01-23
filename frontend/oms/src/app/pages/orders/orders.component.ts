@@ -20,7 +20,8 @@ export class OrdersComponent implements OnInit {
 
  
   ngOnInit(): void {
-    this.orderService.getOrder().subscribe((res) => {
+    // @ts-ignore
+    this.orderService.getOrderByCustomerId(localStorage.getItem("userid")).subscribe((res) => {
       console.log(res.data);
       this.orders = res.data;
   });
