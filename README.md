@@ -49,3 +49,8 @@ TBD
 1. Navigiere zu **/backend/api/WebSocketsAPI**
 2. Führe **npm install** aus aus, um alle Abhängigkeiten zu installieren.
 3. start WebSocketAPI mit **npm start**
+
+## Reporting Service
+1. Navigiere zu **/backend/api/reportingGraphQL**
+2. Führe **npm install** aus, um alle Abhängigkeiten zu installieren.
+3. Gestartet wird der Service mit **npm start**
