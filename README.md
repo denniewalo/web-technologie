@@ -42,10 +42,8 @@ Verwaltet das registrieren eines Benutzers sowie das einloggen und ausloggen mit
 2. Führe **npm install** aus, um alle Abhängigkeiten zu installieren.
 3. Starte jwt mit **npm run login**
 
-### WebSockets
-TBD
 
-## Webserver
+## WebSocket-API
 1. Navigiere zu **/backend/api/WebSocketsAPI**
 2. Führe **npm install** aus aus, um alle Abhängigkeiten zu installieren.
 3. start WebSocketAPI mit **npm start**
