@@ -55,8 +55,6 @@ exports.register = async function (req, res) {
 
 exports.login = async function (req, res) {
 
-    console.log("Loginverfahren gestartet...",req.body, " SONSTIGES ", req.headers['authorization'])
-
     const user = await findUserWithName(req.body.username)
     if (!user) return res.json({ status: "Es konnte kein User gefunden werden! <Login>" })
 

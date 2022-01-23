@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     fullname:   { type: String, require: true },
     username:   { type: String, require: true },
     password:   { type: String, require: true },
-    saltid:     {type: String, require: true},
+    saltid:     { type: String, require: true},
     role:       { type: String, require: true }
 })
 

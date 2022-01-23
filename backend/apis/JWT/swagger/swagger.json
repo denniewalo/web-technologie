@@ -1,0 +1,296 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Users API",
+        "description": "Documentation for Users API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:4500",
+    "basePath": "/user",
+    "tags": [
+        {
+            "name": "User",
+            "description": "The API for User creation, Log in and more with JWT"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/user/register": {
+            "post": {
+                "summary": "Register an new User",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "description": "sends an status, the user object and the accessToken",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/RegisterUser"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "created",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Forbidden"
+                    },
+                    "404": {
+                        "description": "No token provided!"
+                    },
+                    "500": {
+                        "description": "Registerd failed"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "summary": "User can login to get access",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "description": "contains the username and password of the user",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/LoginUser"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "access",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Forbidden"
+                    },
+                    "404": {
+                        "description": "No token provided!"
+                    },
+                    "500": {
+                        "description": "User can not log in"
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "summary": "User can log out",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "description": "contains the userid of the user",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/LogoutUser"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "logout"
+                    },
+                    "401": {
+                        "description": "Access Forbidden"
+                    },
+                    "404": {
+                        "description": "No token provided!"
+                    },
+                    "500": {
+                        "description": "User can not log out"
+                    }
+                }
+            }
+        },
+        "/user/refresh": {
+            "post": {
+                "summary": "The client needs a new accessToken",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "description": "Client sends a userid",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "The response contains the accessToken and the userid",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Forbidden"
+                    },
+                    "404": {
+                        "description": "No token provided!"
+                    },
+                    "500": {
+                        "description": "Cant generate a new AccessToken"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "LoginUser": {
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "example": "Maximus"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "passwort2022"
+                }
+            },
+            "required": [
+                "username",
+                "password"
+            ]
+        },
+        "RegisterUser": {
+            "properties": {
+                "fullname": {
+                    "type": "string",
+                    "example": "Max Mustermann"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "Maximus"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "passwort2022"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "amin-group"
+                }
+            },
+            "required": [
+                "fullname",
+                "username",
+                "password",
+                "role"
+            ]
+        },
+        "LogoutUser": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "4e682a3c-218b-4e5e-ae25-066b1c66c242s"
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "User": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "4e682a3c-218b-4e5e-ae25-066b1c66c242"
+                },
+                "fullname": {
+                    "type": "string",
+                    "example": "Max Mustermann"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "Maximus"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "passwort2022"
+                },
+                "saltid": {
+                    "type": "string",
+                    "example": "0a93deff-f2b3-44e1-af64-e9a6fb51b691"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "amin-group"
+                }
+            },
+            "required": [
+                "id",
+                "fullname",
+                "username",
+                "password",
+                "salt",
+                "role"
+            ]
+        },
+        "Salt": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "0a93deff-f2b3-44e1-af64-e9a6fb51b691"
+                },
+                "salt": {
+                    "type": "string",
+                    "example": "$2b$10$Gw85vyaXgN0dBm4aNX9Kf."
+                },
+                "required": [
+                    "id",
+                    "salt"
+                ]
+            }
+        },
+        "RefreshToken": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "4e682a3c-218b-4e5e-ae25-066b1c66c242"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IiQyYiQxMCRHdzg1dnlhWGdOMGRCbTRhTlg5S2YudkUwVTV5ZlFta1E2YzFuTU1IVEZtYUx6SjMyOXQvQyIsInVzZXJwdyI6IiIsImlhdCI6MTY0MjkzNzMwMSwiZXhwIjoxNjQyOTM3NjAxfQ._FLIXR6zoxZn9WOSn1HGRZ3_cibNtYoxAAsWMJbRuts"
+                },
+                "required": [
+                    "id",
+                    "tokend"
+                ]
+            }
+        }
+    }
+    
+}
